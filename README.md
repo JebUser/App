@@ -29,7 +29,6 @@ Para simplificar la ejecución en Windows, hemos creado un script `setup.bat` qu
 1️⃣ **Clonar el repositorio**
 
 ```sh
-git clone https://github.com/TU_USUARIO/mi_portal_eventos.git
-cd mi_portal_eventos
+git https://github.com/JebUser/App.git
 
 ```
