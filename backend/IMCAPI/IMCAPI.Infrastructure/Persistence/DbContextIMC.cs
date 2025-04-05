@@ -137,6 +137,10 @@ namespace IMCAPI.Infrastructure.Persistence
                 .WithMany(t => t.proyectos)
                 .HasForeignKey(p => p.Tipoid);
             modelBuilder.Entity<Proyecto>()
+                .HasOne(p => p.municipio)
+                .WithMany(m => m.proyectos)
+                .HasForeignKey(p => p.Municipios_id);
+            modelBuilder.Entity<Proyecto>()
                 .HasMany(p => p.beneficiarioProyectos)
                 .WithOne(bp => bp.proyecto);
 

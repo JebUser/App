@@ -29,5 +29,6 @@
 
         // Relaciones muchos a muchos.
         public required List<BeneficiarioProyecto> beneficiarioProyectos { get; set; }
+        public required List<Organizacion> Organizaciones { get; set; }
     }
 }
