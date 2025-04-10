@@ -20,5 +20,7 @@
         public Tipoactividad tipoactividad { get; set; } = default;
         public Lineaprod lineaprod { get; set; } = default;
         public Tipoapoyo tipoapoyo { get; set; } = default;
+        // Relación muchos a muchos.
+        public required List<Beneficiario> Beneficiarios { get; set; }
     }
 }
