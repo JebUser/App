@@ -1,6 +1,14 @@
 import streamlit as st
 import pandas as pd
 
+from utils.utils import init_session_state, navigate_to
+
+init_session_state()
+
+# Resetear a la página de inicio si no lo está
+if st.session_state.current_page != 'inicio':
+    navigate_to('inicio')
+
 st.title("📌 Inicio")
 st.subheader("Eventos recientes")
 

@@ -1,10 +1,11 @@
 import streamlit as st
-from utils.utils import cambiar_pagina
+from utils.utils import navigate_to
 
-def pantalla_registro_organizacion():
+def actualizar_organizacion():
     st.markdown("## Registro organización")
     if st.button("⬅️ Atrás"):
-        cambiar_pagina("registrar")
+        navigate_to("registrar")
+        st.rerun()
 
     col1, col2 = st.columns(2)
     with col1:
