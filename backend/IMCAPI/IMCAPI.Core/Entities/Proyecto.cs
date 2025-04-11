@@ -13,6 +13,6 @@
         public required Tipoproyecto tipoproyecto { get; set; }
         public required Municipio municipio { get; set; }
         // Relación muchos a muchos.
-        public required List<BeneficiarioProyecto> beneficiarioProyectos { get; set; }
+        public List<BeneficiarioProyecto> beneficiarioProyectos { get; set; } = new();
     }
 }
