@@ -29,6 +29,9 @@ namespace IMCAPI.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<BeneficiarioProyecto>()
+                .HasKey(bp => new { bp.Proyectoid, bp.Beneficiarios_id }); // PK compuesta
+
             // Relaciones de un beneficiario.
             modelBuilder.Entity<Beneficiario>()
                 .HasOne(b => b.tipoiden)

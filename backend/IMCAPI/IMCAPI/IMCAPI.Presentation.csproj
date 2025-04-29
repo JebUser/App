@@ -1,13 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IMCAPI.Application\IMCAPI.Application.csproj" />
+    <ProjectReference Include="..\IMCAPI.Core\IMCAPI.Core.csproj" />
+    <ProjectReference Include="..\IMCAPI.Infrastructure\IMCAPI.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
