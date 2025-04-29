@@ -2,7 +2,7 @@ import streamlit as st
 from utils.utils import navigate_to
 
 def pantalla_registro_evento():
-    st.markdown("## Registro evento")
+    st.markdown("## Registro proyecto")
     if st.button("⬅️ Atrás"):
         navigate_to("registrar")
         st.rerun()
@@ -17,7 +17,7 @@ def pantalla_registro_evento():
     col1, col2, col3 = st.columns(3)
     with col1:
         if st.button("Registrar participante"):
-            navigate_to("registro_participante")
+            navigate_to('registrar',"registro_participante")
     with col2:
         st.file_uploader("Subir archivo de participantes", type=["xlsx", "csv"])
     with col3:

@@ -3,7 +3,7 @@ from utils.utils import init_session_state, navigate_to
 
 # Pantallas
 from components.componentes_modificacion.inicio_modificacion import inicio_pagina_mod
-from components.componentes_modificacion.ver_modificar_eventos import pantalla_modificar_organizacion
+from components.componentes_modificacion.ver_modificar_organizacion import pantalla_modificar_organizacion
 from components.componentes_modificacion.actualizar_organizacion import pantalla_actualizar_organizacion
 
 # Inicializar el estado de la sesión

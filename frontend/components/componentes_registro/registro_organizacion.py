@@ -1,7 +1,7 @@
 import streamlit as st
 from utils.utils import navigate_to
 
-def actualizar_organizacion():
+def pantalla_registro_organizacion():
     st.markdown("## Registro organización")
     if st.button("⬅️ Atrás"):
         navigate_to("registrar")

@@ -12,7 +12,6 @@ from components.componentes_registro.registro_archivo import pantalla_registro_a
 
 # Inicializar el estado de la sesión
 init_session_state()
-st.write(st.session_state.current_page)
 if st.session_state.current_page != 'registrar':
     navigate_to('registrar')
 
