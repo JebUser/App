@@ -31,10 +31,5 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
                 .Where(m => m.Id == id) // Busca un tipo de proyecto por su id.
                 .FirstOrDefaultAsync();
         }
-        public async Task AddMunicipioAsync(Municipio municipio)
-        {
-            _context.Municipios.Add(municipio); // Agrega el nuevo tipo de proyecto.
-            await _context.SaveChangesAsync(); // Guarda los cambios.
-        }
     }
 }

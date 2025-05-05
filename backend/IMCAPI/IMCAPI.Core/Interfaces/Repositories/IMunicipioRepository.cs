@@ -11,6 +11,5 @@ namespace IMCAPI.Core.Interfaces.Repositories
     {
         Task<IEnumerable<Municipio>> GetMunicipiosAsync();
         Task<Municipio?> GetMunicipioIdAsync(int id);
-        Task AddMunicipioAsync(Municipio Municipio);
     }
 }

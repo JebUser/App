@@ -65,7 +65,7 @@ public class ProyectosController : ControllerBase
             // Inicializaciones vacías que resolverá automáticamente EF Core.
             municipio = null!,
             tipoproyecto = null!,
-            beneficiarioProyectos = new List<BeneficiarioProyecto>()
+            BeneficiarioActividads = new List<BeneficiarioActividad>()
         };
         if (!_proyectoService.TheIdsAreCorrect(proyecto)) return BadRequest(); // No se puede agregar si las relaciones no existen.
         await _proyectoService.AddProyectoAsync(proyecto); // Instrucción de agregar el nuevo proyecto.

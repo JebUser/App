@@ -28,7 +28,7 @@
         public Sector sector { get; set; } = default;
 
         // Relaciones muchos a muchos.
-        public List<BeneficiarioProyecto> beneficiarioProyectos { get; set; } = new();
+        public List<BeneficiarioActividad> beneficiarioactividad { get; set; } = new();
         public required List<Organizacion> Organizaciones { get; set; }
     }
 }

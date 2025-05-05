@@ -30,9 +30,5 @@ namespace IMCAPI.Application.Services
             if (municipio == null) return null;
             return municipio;
         }
-        public async Task AddMunicipioAsync(Municipio municipio)
-        {
-            await _municipioRepository.AddMunicipioAsync(municipio); // Agrega el tipo de proyecto.
-        }
     }
 }

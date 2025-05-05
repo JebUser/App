@@ -32,7 +32,7 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
         public async Task<Proyecto?> GetBeneficiariosInProyectoAsync(int proyectoid)
         {
             return await _context.Proyectos
-                .Include(p => p.beneficiarioProyectos) // Obtiene las relaciones con los beneficiarios.
+                .Include(p => p.BeneficiarioActividads) // Obtiene las relaciones con los beneficiarios.
                 .Where(p => p.Id == proyectoid)
                 .FirstOrDefaultAsync();
         }

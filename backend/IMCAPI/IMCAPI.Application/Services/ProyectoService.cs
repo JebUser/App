@@ -46,7 +46,7 @@ namespace IMCAPI.Application.Services
             var beneficiarios = await _beneficiarioRepository.GetBeneficiariosAsync();
             var proyecto = await _proyectoRepository.GetBeneficiariosInProyectoAsync(proyectoid);
             if (beneficiarios == null || proyecto == null) return null; // No se puede hacer el join si no hay datos.
-            var beneproys = proyecto.beneficiarioProyectos;
+            var beneproys = proyecto.BeneficiarioActividads;
             var resultado = from bp in beneproys
                             join b in beneficiarios
                             on bp.Beneficiarios_id equals b.Id

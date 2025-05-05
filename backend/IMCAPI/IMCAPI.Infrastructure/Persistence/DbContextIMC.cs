@@ -7,17 +7,18 @@ namespace IMCAPI.Infrastructure.Persistence
     {
         public DbContextIMC(DbContextOptions<DbContextIMC> options) : base(options) { }
 
+        public DbSet<Actividad> Actividades { get; set; } // Obtiene la tabla de actividades.
         public DbSet<Beneficiario> Beneficiarios { get; set; } // Obtiene la tabla de beneficiarios.
-        public DbSet<BeneficiarioProyecto> BeneficiarioProyectos { get; set; } // Obtiene las relaciones entre beneficiarios y proyectos.
+        public DbSet<BeneficiarioActividad> beneficiarioActividad { get; set; } // Obtiene las relaciones entre beneficiarios y proyectos.
         public DbSet<Departamento> Departamentos { get; set; } // Obtiene la tabla de departamentos.
         public DbSet<Edad> Edades { get; set; } // Obtiene la tabla de rango de edades.
         public DbSet<Genero> Generos { get; set; } // Obtiene la tabla de géneros.
         public DbSet<Grupoetnico> grupoEtnico { get; set; } // Obtiene la tabla de grupos étnicos.
         public DbSet<Lineaprod> lineaProd { get; set; } // Obtiene la tabla de líneas de producción.
+        public DbSet<Lugar> Lugares { get; set; } // Obtiene la tabla de lugares.
         public DbSet<Municipio> Municipios { get; set; } // Obtiene la tabla de municipios.
         public DbSet<Organizacion> Organizaciones { get; set; } // Obtiene la tabla de organizaciones.
         public DbSet<Proyecto> Proyectos { get; set; } // Obtiene la tabla de proyectos.
-        public DbSet <Rol> Roles { get; set; } // Obtiene la tabla de roles.
         public DbSet <Sector> Sectores { get; set; } // Obtiene la tabla de sectores.
         public DbSet <Tipoactividad> tipoActividad { get; set; } // Obtiene la tabla de tipos de actividad.
         public DbSet <Tipoapoyo> tipoapoyos { get; set; } // Obtiene la tabla de los tipos de apoyo.
@@ -25,12 +26,20 @@ namespace IMCAPI.Infrastructure.Persistence
         public DbSet<Tipoiden> tipoiden { get; set; } // Obtiene la tabla de los tipos de identificación.
         public DbSet<Tipoorg> tipoorgs { get; set; } // Obtiene la tabla de los tipos de organización.
         public DbSet<Tipoproyecto> tipoProyecto { get; set; } // Obtiene la tabla de los tipos de proyectos.
-        public DbSet<Usuario> Usuarios { get; set; } // Obtiene la tabla de usuarios.
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BeneficiarioProyecto>()
-                .HasKey(bp => new { bp.Proyectoid, bp.Beneficiarios_id }); // PK compuesta
+            modelBuilder.Entity<BeneficiarioActividad>()
+                .HasKey(bp => new { bp.Actividades_id, bp.Beneficiarios_id }); // PK compuesta
+
+            // Relaciones de una actividad.
+            modelBuilder.Entity<Actividad>()
+                .HasOne(a => a.lugar)
+                .WithMany(l => l.actividades)
+                .HasForeignKey(a => a.Lugares_id);
+            modelBuilder.Entity<Actividad>()
+                .HasMany(a => a.beneficiarioactividad)
+                .WithOne(ba => ba.actividad);
 
             // Relaciones de un beneficiario.
             modelBuilder.Entity<Beneficiario>()
@@ -62,21 +71,21 @@ namespace IMCAPI.Infrastructure.Persistence
                 .WithMany(s => s.beneficiarios)
                 .HasForeignKey(b => b.Sectores_id);
             modelBuilder.Entity<Beneficiario>()
-                .HasMany(b => b.beneficiarioProyectos)
+                .HasMany(b => b.beneficiarioactividad)
                 .WithOne(bp => bp.beneficiario);
             modelBuilder.Entity<Beneficiario>()
                 .HasMany(b => b.Organizaciones)
                 .WithMany(o => o.Beneficiarios);
 
-            // Relaciones de la relación beneficiario proyecto.
-            modelBuilder.Entity<BeneficiarioProyecto>()
-                .HasOne(bp => bp.beneficiario)
-                .WithMany(b => b.beneficiarioProyectos)
-                .HasForeignKey(bp => bp.Beneficiarios_id);
-            modelBuilder.Entity<BeneficiarioProyecto>()
-                .HasOne(bp => bp.proyecto)
-                .WithMany(p => p.beneficiarioProyectos)
-                .HasForeignKey(bp => bp.Proyectoid);
+            // Relaciones de la relación beneficiario actividad.
+            modelBuilder.Entity<BeneficiarioActividad>()
+                .HasOne(ba => ba.beneficiario)
+                .WithMany(b => b.beneficiarioactividad)
+                .HasForeignKey(ba => ba.Beneficiarios_id);
+            modelBuilder.Entity<BeneficiarioActividad>()
+                .HasOne(ba => ba.actividad)
+                .WithMany(a => a.beneficiarioactividad)
+                .HasForeignKey(ba => ba.Actividades_id);
 
             // Relaciones de los departamentos.
             modelBuilder.Entity<Departamento>()
@@ -144,13 +153,8 @@ namespace IMCAPI.Infrastructure.Persistence
                 .WithMany(m => m.proyectos)
                 .HasForeignKey(p => p.Municipios_id);
             modelBuilder.Entity<Proyecto>()
-                .HasMany(p => p.beneficiarioProyectos)
-                .WithOne(bp => bp.proyecto);
-
-            // Relaciones de los roles de usuario.
-            modelBuilder.Entity<Rol>()
-                .HasMany(r => r.usuarios)
-                .WithOne(u => u.rol);
+                .HasMany(p => p.actividades)
+                .WithMany(a => a.proyectos);
 
             // Relaciones de los sectores a los que pertenecen los beneficiarios.
             modelBuilder.Entity<Sector>()
@@ -186,12 +190,6 @@ namespace IMCAPI.Infrastructure.Persistence
             modelBuilder.Entity<Tipoproyecto>()
                 .HasMany(t => t.proyectos)
                 .WithOne(p => p.tipoproyecto);
-
-            // Relaciones de los usuarios.
-            modelBuilder.Entity<Usuario>()
-                .HasOne(u => u.rol)
-                .WithMany(r => r.usuarios)
-                .HasForeignKey(u => u.Rolid);
 
             base.OnModelCreating(modelBuilder);
         }
