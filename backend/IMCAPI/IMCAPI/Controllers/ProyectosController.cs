@@ -36,52 +36,28 @@ public class ProyectosController : ControllerBase
         if (proyecto == null) return NotFound();
         return Ok(proyecto);
     }
-    /// <summary>
-    /// Obtiene los beneficiarios vinculados a un proyecto.
-    /// </summary>
-    /// <param name="id">El id del proyecto.</param>
-    /// <returns>La lista de beneficiarios en el proyecto.</returns>
-    [HttpGet("proyectoid/{id}")]
-    public async Task<IActionResult> GetBeneficiariosOfProyecto(int id)
-    {
-        var beneficiarios = await _proyectoService.GetBeneficiariosInProyectoAsync(id);
-        if (beneficiarios == null) return NotFound();
-        return Ok(beneficiarios);
-    }
+
     /// <summary>
     /// Agrega un nuevo proyecto al sistema.
     /// </summary>
     /// <param name="proyectodto">El proyecto que se quiere agregar</param>
     [HttpPost]
-    public async Task<IActionResult> CreateProyecto([FromBody] CreateProyectoDto proyectodto)
+    public async Task<IActionResult> CreateProyecto([FromBody] ProyectoDto proyectodto)
     {
-        var proyecto = new Proyecto
-        {
-            Nombre = proyectodto.Nombre,
-            Fechainicio = proyectodto.Fechainicio,
-            FechaFinal = proyectodto.FechaFinal,
-            Municipios_id = proyectodto.Municipios_id,
-            Tipoid = proyectodto.Tipoid,
-            // Inicializaciones vacías que resolverá automáticamente EF Core.
-            municipio = null!,
-            tipoproyecto = null!,
-            BeneficiarioActividads = new List<BeneficiarioActividad>()
-        };
-        if (!_proyectoService.TheIdsAreCorrect(proyecto)) return BadRequest(); // No se puede agregar si las relaciones no existen.
-        await _proyectoService.AddProyectoAsync(proyecto); // Instrucción de agregar el nuevo proyecto.
-        return Created($"/api/Proyectos/{proyecto.Id}", null);
+        await _proyectoService.AddProyectoAsync(proyectodto); // Instrucción de agregar el nuevo proyecto.
+        return Created($"/api/Proyectos/{proyectodto.Id}", null);
     }
     /// <summary>
     /// Modifica un proyecto.
     /// </summary>
     /// <param name="id">El id del proyecto.</param>
-    /// <param name="nuevoProyecto">El proyecto modificado</param>
+    /// <param name="nuevoProyectoDto">El proyecto modificado</param>
     /// <returns>Nada.</returns>
     [HttpPut("{id}")]
-    public async Task<IActionResult> ModifyProyecto(int id, [FromBody] Proyecto nuevoProyecto)
+    public async Task<IActionResult> ModifyProyecto(int id, [FromBody] ProyectoDto nuevoProyectoDto)
     {
-        if (id != nuevoProyecto.Id || !_proyectoService.TheIdsAreCorrect(nuevoProyecto)) return BadRequest(); // No se puede modificar el proyecto si los ids no concuerdan o si se usan ids de relaciones no existentes.
-        await _proyectoService.UpdateProyectoAsync(nuevoProyecto);
+        if (id != nuevoProyectoDto.Id) return BadRequest(); // No se puede modificar el proyecto si los ids no concuerdan o si se usan ids de relaciones no existentes.
+        await _proyectoService.UpdateProyectoAsync(nuevoProyectoDto);
         return NoContent();
     }
     /// <summary>

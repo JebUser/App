@@ -21,10 +21,10 @@ namespace IMCAPI.Infrastructure.Persistence
         public DbSet<Proyecto> Proyectos { get; set; } // Obtiene la tabla de proyectos.
         public DbSet <Sector> Sectores { get; set; } // Obtiene la tabla de sectores.
         public DbSet <Tipoactividad> tipoActividad { get; set; } // Obtiene la tabla de tipos de actividad.
-        public DbSet <Tipoapoyo> tipoapoyos { get; set; } // Obtiene la tabla de los tipos de apoyo.
+        public DbSet <Tipoapoyo> tipoapoyo { get; set; } // Obtiene la tabla de los tipos de apoyo.
         public DbSet <Tipobene> tipoBene { get; set; } // Obtiene la tabla de los tipos de beneficiarios.
         public DbSet<Tipoiden> tipoiden { get; set; } // Obtiene la tabla de los tipos de identificación.
-        public DbSet<Tipoorg> tipoorgs { get; set; } // Obtiene la tabla de los tipos de organización.
+        public DbSet<Tipoorg> tipoorg { get; set; } // Obtiene la tabla de los tipos de organización.
         public DbSet<Tipoproyecto> tipoProyecto { get; set; } // Obtiene la tabla de los tipos de proyectos.
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -149,12 +149,13 @@ namespace IMCAPI.Infrastructure.Persistence
                 .WithMany(t => t.proyectos)
                 .HasForeignKey(p => p.Tipoid);
             modelBuilder.Entity<Proyecto>()
-                .HasOne(p => p.municipio)
-                .WithMany(m => m.proyectos)
-                .HasForeignKey(p => p.Municipios_id);
-            modelBuilder.Entity<Proyecto>()
                 .HasMany(p => p.actividades)
-                .WithMany(a => a.proyectos);
+                .WithMany(a => a.proyectos)
+                .UsingEntity<Dictionary<string, object>>(
+        "ActividadProyecto",
+        j => j.HasOne<Actividad>().WithMany().HasForeignKey("Actividades_Id"),
+        j => j.HasOne<Proyecto>().WithMany().HasForeignKey("Proyectos_Id")
+    );
 
             // Relaciones de los sectores a los que pertenecen los beneficiarios.
             modelBuilder.Entity<Sector>()
