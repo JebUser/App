@@ -16,7 +16,7 @@ namespace IMCAPI.Core.Entities
 
         // Datos a obtener de las claves foráneas.
         public Lugar lugar { get; set; }
-        public List<BeneficiarioActividad> beneficiarioactividad { get; set; } = new();
+        public List<Beneficiario> beneficiarios { get; set; } = new();
         public List<Proyecto> proyectos { get; set; } = new();
     }
 }

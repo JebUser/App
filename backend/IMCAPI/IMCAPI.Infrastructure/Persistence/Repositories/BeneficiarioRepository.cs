@@ -23,7 +23,6 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
                 .Include(b => b.tipobene)
                 .Include(b => b.municipio)
                 .Include(b => b.sector)
-                .Include(b => b.beneficiarioactividad)
                 .Include(b => b.Organizaciones)
                 .ToListAsync();
         }
@@ -38,7 +37,6 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
                 .Include(b => b.tipobene)
                 .Include(b => b.municipio)
                 .Include(b => b.sector)
-                .Include(b => b.beneficiarioactividad)
                 .Include(b => b.Organizaciones)
                 .Where(b => b.Id == id)
                 .FirstOrDefaultAsync();
@@ -46,6 +44,7 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
 
         public async Task AddBeneficiarioAsync(Beneficiario beneficiario)
         {
+            _context.AttachRange(beneficiario.Organizaciones);
             _context.Beneficiarios.Add(beneficiario);
             await _context.SaveChangesAsync();
         }

@@ -17,17 +17,16 @@ namespace IMCAPI.Core.DTO
         public string Apellido2 { get; set; }
         public string Celular { get; set; }
         public byte[] Firma { get; set; }
-        public Tipoiden tipoiden { get; set; }
-        public Genero genero { get; set; }
-        public Edad Rangoedad { get; set; }
-        public Grupoetnico grupoetnico { get; set; }
-        public Tipobene tipobene { get; set; }
-        public Municipio municipio { get; set; }
-        public Sector sector { get; set; }
-        public List<BeneficiarioActividad> beneficiarioactividad { get; set; }
-        public List<Organizacion> Organizaciones { get; set; }
+        public TipoidenDto? tipoiden { get; set; }
+        public GeneroDto genero { get; set; }
+        public EdadDto? Rangoedad { get; set; }
+        public GrupoetnicoDto? grupoetnico { get; set; }
+        public TipobeneDto? tipobene { get; set; }
+        public MunicipioDto? municipio { get; set; }
+        public SectorDto? sector { get; set; }
+        public List<OrganizacionDto> Organizaciones { get; set; }
 
-        public BeneficiarioDto(int id, string identificacion, string nombre1, string nombre2, string apellido1, string apellido2, string celular, byte[] firma, Tipoiden tipoiden, Genero genero, Edad rangoedad, Grupoetnico grupoetnico, Tipobene tipobene, Municipio municipio, Sector sector, List<BeneficiarioActividad> beneficiarioactividad, List<Organizacion> organizaciones)
+        public BeneficiarioDto(int id, string identificacion, string nombre1, string nombre2, string apellido1, string apellido2, string celular, byte[] firma, TipoidenDto? tipoiden, GeneroDto genero, EdadDto? rangoedad, GrupoetnicoDto? grupoetnico, TipobeneDto? tipobene, MunicipioDto? municipio, SectorDto? sector,List<OrganizacionDto> organizaciones)
         {
             Id = id;
             Identificacion = identificacion;
@@ -44,7 +43,6 @@ namespace IMCAPI.Core.DTO
             this.tipobene = tipobene;
             this.municipio = municipio;
             this.sector = sector;
-            this.beneficiarioactividad = beneficiarioactividad;
             Organizaciones = organizaciones;
         }
     }

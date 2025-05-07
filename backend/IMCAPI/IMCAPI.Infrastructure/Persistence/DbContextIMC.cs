@@ -9,7 +9,6 @@ namespace IMCAPI.Infrastructure.Persistence
 
         public DbSet<Actividad> Actividades { get; set; } // Obtiene la tabla de actividades.
         public DbSet<Beneficiario> Beneficiarios { get; set; } // Obtiene la tabla de beneficiarios.
-        public DbSet<BeneficiarioActividad> beneficiarioActividad { get; set; } // Obtiene las relaciones entre beneficiarios y proyectos.
         public DbSet<Departamento> Departamentos { get; set; } // Obtiene la tabla de departamentos.
         public DbSet<Edad> Edades { get; set; } // Obtiene la tabla de rango de edades.
         public DbSet<Genero> Generos { get; set; } // Obtiene la tabla de géneros.
@@ -29,8 +28,6 @@ namespace IMCAPI.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BeneficiarioActividad>()
-                .HasKey(bp => new { bp.Actividades_id, bp.Beneficiarios_id }); // PK compuesta
 
             // Relaciones de una actividad.
             modelBuilder.Entity<Actividad>()
@@ -38,8 +35,14 @@ namespace IMCAPI.Infrastructure.Persistence
                 .WithMany(l => l.actividades)
                 .HasForeignKey(a => a.Lugares_id);
             modelBuilder.Entity<Actividad>()
-                .HasMany(a => a.beneficiarioactividad)
-                .WithOne(ba => ba.actividad);
+                .HasMany(a => a.beneficiarios)
+                .WithMany(b => b.actividades)
+                .UsingEntity<Dictionary<string, object>>(
+        "BeneficiarioActividad",
+        j => j.HasOne<Beneficiario>().WithMany().HasForeignKey("Beneficiarios_Id").OnDelete(DeleteBehavior.Cascade),
+        j => j.HasOne<Actividad>().WithMany().HasForeignKey("Actividades_Id").OnDelete(DeleteBehavior.Cascade)
+
+    );
 
             // Relaciones de un beneficiario.
             modelBuilder.Entity<Beneficiario>()
@@ -71,21 +74,13 @@ namespace IMCAPI.Infrastructure.Persistence
                 .WithMany(s => s.beneficiarios)
                 .HasForeignKey(b => b.Sectores_id);
             modelBuilder.Entity<Beneficiario>()
-                .HasMany(b => b.beneficiarioactividad)
-                .WithOne(bp => bp.beneficiario);
-            modelBuilder.Entity<Beneficiario>()
                 .HasMany(b => b.Organizaciones)
-                .WithMany(o => o.Beneficiarios);
-
-            // Relaciones de la relación beneficiario actividad.
-            modelBuilder.Entity<BeneficiarioActividad>()
-                .HasOne(ba => ba.beneficiario)
-                .WithMany(b => b.beneficiarioactividad)
-                .HasForeignKey(ba => ba.Beneficiarios_id);
-            modelBuilder.Entity<BeneficiarioActividad>()
-                .HasOne(ba => ba.actividad)
-                .WithMany(a => a.beneficiarioactividad)
-                .HasForeignKey(ba => ba.Actividades_id);
+                .WithMany(o => o.Beneficiarios)
+                .UsingEntity<Dictionary<string, object>>(
+        "BeneficiarioOrg",
+        j => j.HasOne<Organizacion>().WithMany().HasForeignKey("OrganizacionId").OnDelete(DeleteBehavior.Cascade),
+        j => j.HasOne<Beneficiario>().WithMany().HasForeignKey("Beneficiarios_Id").OnDelete(DeleteBehavior.Cascade)
+    );
 
             // Relaciones de los departamentos.
             modelBuilder.Entity<Departamento>()

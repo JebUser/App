@@ -9,26 +9,26 @@
         public required string Apellido1 { get; set; }
         public string Apellido2 { get; set; } = string.Empty;
         public string Celular { get; set; } = string.Empty;
-        public int Tipoiden_id { get; set; } = 0;
+        public int? Tipoiden_id { get; set; } = 0;
         public int Generos_id { get; set; } = 0;
-        public int Edades_id { get; set; } = 0;
+        public int? Edades_id { get; set; } = 0;
         public byte[] Firma { get; set; } = default;
-        public int Grupoetnico_id { get; set; } = 0;
-        public int Tipobene_id { get; set; } = 0;
-        public int Municipios_id { get; set; } = 0;
-        public int Sectores_id { get; set; } = 0;
+        public int? Grupoetnico_id { get; set; } = 0;
+        public int? Tipobene_id { get; set; } = 0;
+        public int? Municipios_id { get; set; } = 0;
+        public int? Sectores_id { get; set; } = 0;
 
         // Datos a obtener de las claves foráneas.
-        public Tipoiden tipoiden { get; set; } = default;
+        public Tipoiden? tipoiden { get; set; } = default;
         public Genero genero { get; set; } = default;
-        public Edad Rangoedad { get; set; } = default;
-        public Grupoetnico grupoetnico { get; set; } = default;
-        public Tipobene tipobene { get; set; } = default;
-        public Municipio municipio { get; set; } = default;
-        public Sector sector { get; set; } = default;
+        public Edad? Rangoedad { get; set; } = default;
+        public Grupoetnico? grupoetnico { get; set; } = default;
+        public Tipobene? tipobene { get; set; } = default;
+        public Municipio? municipio { get; set; } = default;
+        public Sector? sector { get; set; } = default;
 
         // Relaciones muchos a muchos.
-        public List<BeneficiarioActividad> beneficiarioactividad { get; set; } = new();
+        public List<Actividad> actividades { get; set; } = new();
         public required List<Organizacion> Organizaciones { get; set; }
     }
 }

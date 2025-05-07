@@ -13,12 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // Agregar repositorios al contenedor.
+builder.Services.AddScoped<IActividadRepository, ActividadRepository>();
 builder.Services.AddScoped<IBeneficiarioRepository, BeneficiarioRepository>();
 builder.Services.AddScoped<IMunicipioRepository, MunicipioRepository>();
+builder.Services.AddScoped<ILugarRepository, LugarRepository>();
 builder.Services.AddScoped<IProyectoRepository, ProyectoRepository>();
 builder.Services.AddScoped<ITipoProyectoRepository, TipoProyectoRepository>();
 
 // Agregar servicios al contenedor.
+builder.Services.AddScoped<IActividadService, ActividadService>();
 // builder.Services.AddScoped<IBeneficiarioService, BeneficiarioService>();
 builder.Services.AddScoped<IMunicipioService, MunicipioService>();
 builder.Services.AddScoped<IProyectoService, ProyectoService>();

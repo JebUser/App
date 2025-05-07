@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IMCAPI.Core.DTO
+{
+    public class TipoidenDto
+    {
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+
+        public TipoidenDto(int id, string nombre)
+        {
+            Id = id;
+            Nombre = nombre;
+        }
+    }
+}

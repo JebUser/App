@@ -15,12 +15,12 @@
         public int Tipoapoyo_id { get; set; } = 0;
 
         // Datos a obtener de las claves foráneas.
-        public required Municipio municipio { get; set; }
-        public Tipoorg tipoorg { get; set; } = default;
-        public Tipoactividad tipoactividad { get; set; } = default;
-        public Lineaprod lineaprod { get; set; } = default;
-        public Tipoapoyo tipoapoyo { get; set; } = default;
+        public Municipio municipio { get; set; }
+        public Tipoorg? tipoorg { get; set; } = default;
+        public Tipoactividad? tipoactividad { get; set; } = default;
+        public Lineaprod? lineaprod { get; set; } = default;
+        public Tipoapoyo? tipoapoyo { get; set; } = default;
         // Relación muchos a muchos.
-        public required List<Beneficiario> Beneficiarios { get; set; }
+        public List<Beneficiario> Beneficiarios { get; set; }
     }
 }

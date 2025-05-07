@@ -19,15 +19,52 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
         {
             return await _context.Actividades
                 .Include(a => a.lugar)
-                .Include(a => a.proyectos)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.tipoiden)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.genero)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.Rangoedad)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.grupoetnico)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.tipobene)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.municipio)
+                        .ThenInclude(m => m.departamento)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.sector)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.Organizaciones)
+                        .ThenInclude(o => o.municipio)
+                            .ThenInclude(m => m.departamento)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.Organizaciones)
+                        .ThenInclude(o => o.tipoorg)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.Organizaciones)
+                        .ThenInclude(o => o.tipoactividad)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.Organizaciones)
+                        .ThenInclude(o => o.lineaprod)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.Organizaciones)
+                        .ThenInclude(o => o.tipoapoyo)
                 .ToListAsync();
+            /*
+            return await _context.Actividades
+                .Include(a => a.lugar)
+                .Include(a => a.beneficiarios)
+                    .ThenInclude(b => b.tipoiden)
+                .ToListAsync();
+            */
         }
 
         public async Task<Actividad?> GetActividadByIdAsync(int id)
         {
             return await _context.Actividades
                 .Include(a => a.lugar)
-                .Include(a => a.proyectos)
+                .Include(a => a.beneficiarios)
                 .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
         }
