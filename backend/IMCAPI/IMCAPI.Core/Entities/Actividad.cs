@@ -15,7 +15,7 @@ namespace IMCAPI.Core.Entities
         public required int Lugares_id { get; set; }
 
         // Datos a obtener de las claves foráneas.
-        public required Lugar lugar { get; set; }
+        public Lugar lugar { get; set; }
         public List<BeneficiarioActividad> beneficiarioactividad { get; set; } = new();
         public List<Proyecto> proyectos { get; set; } = new();
     }

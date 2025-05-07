@@ -12,7 +12,5 @@
         public required List<Beneficiario> beneficiarios { get; set; }
         // Relación con Organizaciones.
         public required List<Organizacion> organizaciones { get; set; }
-        // Relación con Proyectos.
-        public List<Proyecto> proyectos { get; set; } = default;
     }
 }

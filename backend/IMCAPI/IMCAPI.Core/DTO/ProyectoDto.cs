@@ -8,10 +8,10 @@ namespace IMCAPI.Core.DTO
         public string Nombre { get; set; }
         public DateTime Fechainicio { get; set; }
         public DateTime Fechafinal {  get; set; }
-        public Tipoproyecto tipoproyecto { get; set; }
-        public List<Actividad> actividades { get; set; }
+        public TipoproyectoDto? tipoproyecto { get; set; }
+        public List<ActividadDto> actividades { get; set; }
 
-        public ProyectoDto(int id, string nombre, DateTime fechainicio, DateTime fechafinal, Tipoproyecto tipoproyecto, List<Actividad> actividades)
+        public ProyectoDto(int id, string nombre, DateTime fechainicio, DateTime fechafinal, TipoproyectoDto tipoproyecto, List<ActividadDto> actividades)
         {
             Id = id;
             Nombre = nombre;

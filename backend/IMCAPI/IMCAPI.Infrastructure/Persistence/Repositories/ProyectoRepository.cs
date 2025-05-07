@@ -18,6 +18,7 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
             return await _context.Proyectos
                 .Include(p => p.tipoproyecto) // Agrega su tipo de proyecto.
                 .Include(p => p.actividades)
+                    .ThenInclude(a => a.lugar)
                 .ToListAsync();
         }
         public async Task<Proyecto?> GetProyectoIdAsync(int id)
@@ -25,11 +26,13 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
             return await _context.Proyectos
                 .Include(p => p.tipoproyecto) // Agrega su tipo de proyecto.
                 .Include (p => p.actividades)
+                    .ThenInclude (a => a.lugar)
                 .Where(p => p.Id == id) // Busca un proyecto por su id.
                 .FirstOrDefaultAsync(); 
         }
         public async Task AddProyectoAsync(Proyecto proyecto)
         {
+            _context.AttachRange(proyecto.actividades);
             _context.Proyectos.Add(proyecto); // Agrega un nuevo proyecto.
             await _context.SaveChangesAsync(); // Guarda los cambios.
         }

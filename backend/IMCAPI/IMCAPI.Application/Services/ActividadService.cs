@@ -25,12 +25,12 @@ namespace IMCAPI.Application.Services
         {
             var actividades = await _actividadRepository.GetActividadesAsync();
             return actividades.Select(a =>
-            new ActividadDto(a.Id, a.Nombre, a.FechaInicio, a.FechaFinal, a.lugar.Nombre, a.proyectos));
+            new ActividadDto(a.Id, a.Nombre, a.FechaInicio, a.FechaFinal, new LugarDto(a.lugar.Id, a.lugar.Nombre)));
         }
 
         public async Task AddActividadAsync(ActividadDto actividaddto)
         {
-            var lugar = await _lugarRepository.GetLugarNombreAsync(actividaddto.Lugar);
+            var lugar = await _lugarRepository.GetLugarNombreAsync(actividaddto.lugar.Nombre);
             if (lugar != null)
             {
                 var actividad = new Actividad
@@ -40,8 +40,7 @@ namespace IMCAPI.Application.Services
                     FechaInicio = actividaddto.FechaInicio,
                     FechaFinal = actividaddto.FechaFinal,
                     Lugares_id = lugar.Id,
-                    lugar = lugar,
-                    proyectos = actividaddto.proyectos
+                    lugar = lugar
                 };
 
                 await _actividadRepository.AddActividadAsync(actividad);
@@ -49,7 +48,7 @@ namespace IMCAPI.Application.Services
         }
         public async Task UpdateActividadAsync(ActividadDto actividaddto)
         {
-            var lugar = await _lugarRepository.GetLugarNombreAsync(actividaddto.Lugar);
+            var lugar = await _lugarRepository.GetLugarNombreAsync(actividaddto.lugar.Nombre);
             if (lugar != null)
             {
                 var actividad = new Actividad
@@ -59,8 +58,7 @@ namespace IMCAPI.Application.Services
                     FechaInicio = actividaddto.FechaInicio,
                     FechaFinal = actividaddto.FechaFinal,
                     Lugares_id = lugar.Id,
-                    lugar = lugar,
-                    proyectos = actividaddto.proyectos
+                    lugar = lugar
                 };
 
                 await _actividadRepository.UpdateActividadAsync(actividad);

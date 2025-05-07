@@ -13,17 +13,15 @@ namespace IMCAPI.Core.DTO
         public string Nombre { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime? FechaFinal { get; set; } = null;
-        public string Lugar;
-        public List<Proyecto> proyectos { get; set; }
+        public LugarDto lugar {  get; set; }
         
-        public ActividadDto(int id, string nombre, DateTime fechainicio, DateTime? fechafinal, string lugar, List<Proyecto> proyectos)
+        public ActividadDto(int id, string nombre, DateTime fechainicio, DateTime? fechafinal, LugarDto lugar)
         {
             Id = id;
             Nombre = nombre;
             FechaInicio = fechainicio;
             FechaFinal = fechafinal;
-            Lugar = lugar;
-            this.proyectos = proyectos;
+            this.lugar = lugar;
         }
     }
 }

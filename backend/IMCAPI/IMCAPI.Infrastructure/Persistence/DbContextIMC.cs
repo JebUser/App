@@ -112,6 +112,11 @@ namespace IMCAPI.Infrastructure.Persistence
                 .HasMany(l => l.organizaciones)
                 .WithOne(o => o.lineaprod);
 
+            // Relaciones de los lugares.
+            modelBuilder.Entity<Lugar>()
+                .HasMany(l => l.actividades)
+                .WithOne(a => a.lugar);
+
             // Relaciones de los municipios.
             modelBuilder.Entity<Municipio>()
                 .HasOne(m => m.departamento)
@@ -153,8 +158,8 @@ namespace IMCAPI.Infrastructure.Persistence
                 .WithMany(a => a.proyectos)
                 .UsingEntity<Dictionary<string, object>>(
         "ActividadProyecto",
-        j => j.HasOne<Actividad>().WithMany().HasForeignKey("Actividades_Id"),
-        j => j.HasOne<Proyecto>().WithMany().HasForeignKey("Proyectos_Id")
+        j => j.HasOne<Actividad>().WithMany().HasForeignKey("Actividades_Id").OnDelete(DeleteBehavior.Cascade),
+        j => j.HasOne<Proyecto>().WithMany().HasForeignKey("Proyectos_Id").OnDelete(DeleteBehavior.Cascade)
     );
 
             // Relaciones de los sectores a los que pertenecen los beneficiarios.

@@ -6,6 +6,6 @@
         public required string Nombre { get; set; }
 
         // Relación con Proyectos.
-        public required List<Proyecto> proyectos { get; set; }
+        public List<Proyecto> proyectos { get; set; }
     }
 }
