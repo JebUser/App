@@ -9,10 +9,10 @@
         public int Integrantes { get; set; } = -1;
         public int Nummujeres { get; set; } = -1;
         public float Orgmujeres { get; set; } = -1f;
-        public int Tipoorg_id { get; set; } = 0;
-        public int Tipoactividad_id { get; set; } = 0;
-        public int Lineaprod_id { get; set; } = 0;
-        public int Tipoapoyo_id { get; set; } = 0;
+        public int? Tipoorg_id { get; set; } = 0;
+        public int? Tipoactividad_id { get; set; } = 0;
+        public int? Lineaprod_id { get; set; } = 0;
+        public int? Tipoapoyo_id { get; set; } = 0;
 
         // Datos a obtener de las claves foráneas.
         public Municipio municipio { get; set; }

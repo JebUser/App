@@ -25,14 +25,6 @@ namespace IMCAPI.Application.Services
         public async Task<IEnumerable<ActividadDto>> GetActividadesAsync()
         {
             var actividades = await _actividadRepository.GetActividadesAsync();
-            foreach (var act in actividades)
-            {
-                Console.WriteLine($"Actividad {act.Nombre} tiene {act.beneficiarios.Count} beneficiarios");
-                foreach (var b in act.beneficiarios)
-                {
-                    Console.WriteLine($" - Beneficiario: {b.Nombre1} {b.Apellido1}");
-                }
-            }
             return actividades.Select(a =>
             new ActividadDto(a.Id, a.Nombre, a.FechaInicio, a.FechaFinal, new LugarDto(a.lugar.Id, a.lugar.Nombre),a.beneficiarios.Select(b => new BeneficiarioDto(
                 b.Id,

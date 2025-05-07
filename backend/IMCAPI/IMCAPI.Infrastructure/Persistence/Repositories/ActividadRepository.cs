@@ -51,13 +51,6 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
                     .ThenInclude(b => b.Organizaciones)
                         .ThenInclude(o => o.tipoapoyo)
                 .ToListAsync();
-            /*
-            return await _context.Actividades
-                .Include(a => a.lugar)
-                .Include(a => a.beneficiarios)
-                    .ThenInclude(b => b.tipoiden)
-                .ToListAsync();
-            */
         }
 
         public async Task<Actividad?> GetActividadByIdAsync(int id)
