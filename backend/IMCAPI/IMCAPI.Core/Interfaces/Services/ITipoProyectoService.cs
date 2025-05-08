@@ -1,4 +1,4 @@
-﻿using IMCAPI.Core.Entities;
+﻿using IMCAPI.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,10 @@ namespace IMCAPI.Core.Interfaces.Services
 {
     public interface ITipoProyectoService
     {
-        Task<IEnumerable<Tipoproyecto>> GetTipoProyectosAsync();
-        Task<Tipoproyecto?> GetTipoProyectoIdAsync(int id);
-        Task AddTipoProyectoAsync(Tipoproyecto tipoproyecto);
+        Task<IEnumerable<TipoproyectoDto>> GetTipoProyectosAsync();
+        Task<TipoproyectoDto?> GetTipoProyectoIdAsync(int id);
+        Task AddTipoProyectoAsync(TipoproyectoDto tipoproyectodto);
+        Task UpdateTipoProyectoAsync(TipoproyectoDto tipoproyectodto);
+        Task DeleteTipoProyectoAsync(int id);
     }
 }

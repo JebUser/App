@@ -1,4 +1,4 @@
-﻿using IMCAPI.Core.Entities;
+﻿using IMCAPI.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace IMCAPI.Core.Interfaces.Services
 {
     public interface ISectorService
     {
-        Task<IEnumerable<Sector>> GetSectoresAsync();
-        Task<Sector?> GetSectorByIdAsync(int id);
-        Task AddSectorAsync(Sector sector);
-        Task UpdateSectorAsync(Sector sector);
+        Task<IEnumerable<SectorDto>> GetSectoresAsync();
+        Task<SectorDto?> GetSectorByIdAsync(int id);
+        Task AddSectorAsync(SectorDto sectordto);
+        Task UpdateSectorAsync(SectorDto sectordto);
         Task DeleteSectorAsync(int id);
     }
 }

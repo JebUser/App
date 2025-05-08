@@ -1,4 +1,4 @@
-﻿using IMCAPI.Core.Entities;
+﻿using IMCAPI.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace IMCAPI.Core.Interfaces.Services
 {
     public interface IGeneroService
     {
-        Task<IEnumerable<Genero>> GetGenerosAsync();
-        Task<Genero?> GetGeneroByIdAsync(int id);
-        Task AddGeneroAsync(Genero genero);
-        Task UpdateGeneroAsync(Genero genero);
+        Task<IEnumerable<GeneroDto>> GetGenerosAsync();
+        Task<GeneroDto?> GetGeneroByIdAsync(int id);
+        Task AddGeneroAsync(GeneroDto generodto);
+        Task UpdateGeneroAsync(GeneroDto genero);
         Task DeleteGeneroAsync(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _generoRepository = generoRepository;
         }
 
-        public async Task<IEnumerable<Genero>> GetGenerosAsync()
+        public async Task<IEnumerable<GeneroDto>> GetGenerosAsync()
         {
-            return await _generoRepository.GetGenerosAsync();
+            var generos = await _generoRepository.GetGenerosAsync();
+            return generos.Select(g => new GeneroDto(g.Id, g.Nombre));
         }
 
-        public async Task<Genero?> GetGeneroByIdAsync(int id)
+        public async Task<GeneroDto?> GetGeneroByIdAsync(int id)
         {
-            return await _generoRepository.GetGeneroByIdAsync(id);
+            var genero = await _generoRepository.GetGeneroByIdAsync(id);
+            return new GeneroDto(genero.Id, genero.Nombre);
         }
 
-        public async Task AddGeneroAsync(Genero genero)
+        public async Task AddGeneroAsync(GeneroDto generodto)
         {
+            var genero = new Genero
+            {
+                Id = generodto.Id,
+                Nombre = generodto.Nombre
+            };
             await _generoRepository.AddGeneroAsync(genero);
         }
 
-        public async Task UpdateGeneroAsync(Genero genero)
+        public async Task UpdateGeneroAsync(GeneroDto generodto)
         {
-            await _generoRepository.UpdateGeneroAsync(genero);
+            var genero = await _generoRepository.GetGeneroByIdAsync(generodto.Id);
+            if (genero != null)
+            {
+                genero.Nombre = generodto.Nombre;
+                await _generoRepository.UpdateGeneroAsync(genero);
+            }
         }
 
         public async Task DeleteGeneroAsync(int id)

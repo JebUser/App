@@ -15,18 +15,41 @@ var builder = WebApplication.CreateBuilder(args);
 // Agregar repositorios al contenedor.
 builder.Services.AddScoped<IActividadRepository, ActividadRepository>();
 builder.Services.AddScoped<IBeneficiarioRepository, BeneficiarioRepository>();
+builder.Services.AddScoped<IEdadRepository, EdadRepository>();
+builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
+builder.Services.AddScoped<IGrupoetnicoRepository, GrupoetnicoRepository>();
+builder.Services.AddScoped<ILineaprodRepository, LineaprodRepository>();
 builder.Services.AddScoped<IMunicipioRepository, MunicipioRepository>();
 builder.Services.AddScoped<ILugarRepository, LugarRepository>();
+builder.Services.AddScoped<IMunicipioRepository, MunicipioRepository>();
 builder.Services.AddScoped<IOrganizacionRepository, OrganizacionRepository>();
 builder.Services.AddScoped<IProyectoRepository, ProyectoRepository>();
+builder.Services.AddScoped<ISectorRepository, SectorRepository>();
+builder.Services.AddScoped<ITipoactividadRepository, TipoactividadRepository>();
+builder.Services.AddScoped<ITipoapoyoRepository, TipoapoyoRepository>();
+builder.Services.AddScoped<ITipobeneRepository, TipobeneRepository>();
+builder.Services.AddScoped<ITipoidenRepository, TipoidenRepository>();
+builder.Services.AddScoped<ITipoorgRepository, TipoorgRepository>();
 builder.Services.AddScoped<ITipoProyectoRepository, TipoProyectoRepository>();
 
 // Agregar servicios al contenedor.
 builder.Services.AddScoped<IActividadService, ActividadService>();
 builder.Services.AddScoped<IBeneficiarioService, BeneficiarioService>();
+builder.Services.AddScoped<IEdadService, EdadService>();
+builder.Services.AddScoped<IGeneroService, GeneroService>();
+builder.Services.AddScoped<IGrupoetnicoService, GrupoetnicoService>();
+builder.Services.AddScoped<ILineaprodService, LineaprodService>();
+builder.Services.AddScoped<ILugarService, LugarService>();
 builder.Services.AddScoped<IMunicipioService, MunicipioService>();
 builder.Services.AddScoped<IOrganizacionService, OrganizacionService>();
 builder.Services.AddScoped<IProyectoService, ProyectoService>();
+builder.Services.AddScoped<ISectorService, SectorService>();
+builder.Services.AddScoped<ITipoactividadService, TipoactividadService>();
+builder.Services.AddScoped<ITipoapoyoService, TipoapoyoService>();
+builder.Services.AddScoped<ITipobeneService, TipobeneService>();
+builder.Services.AddScoped<ITipoidenService, TipoidenService>();
+builder.Services.AddScoped<ITipoorgService, TipoorgService>();
+builder.Services.AddScoped<ITipoProyectoService, TipoProyectoService>();
 builder.Services.AddScoped<ITipoProyectoService, TipoProyectoService>();
 
 builder.Services.AddControllers();

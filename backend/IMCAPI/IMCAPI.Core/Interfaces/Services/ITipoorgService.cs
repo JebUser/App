@@ -1,4 +1,4 @@
-﻿using IMCAPI.Core.Entities;
+﻿using IMCAPI.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace IMCAPI.Core.Interfaces.Services
 {
     public interface ITipoorgService
     {
-        Task<IEnumerable<Tipoorg>> GetTipoorgsAsync();
-        Task<Tipoorg?> GetTipoorgByIdAsync(int id);
-        Task AddTipoorgAsync(Tipoorg tipoorg);
-        Task UpdateTipoorgAsync(Tipoorg tipoorg);
+        Task<IEnumerable<TipoorgDto>> GetTipoorgsAsync();
+        Task<TipoorgDto?> GetTipoorgByIdAsync(int id);
+        Task AddTipoorgAsync(TipoorgDto tipoorgdto);
+        Task UpdateTipoorgAsync(TipoorgDto tipoorgdto);
         Task DeleteTipoorgAsync(int id);
     }
 }

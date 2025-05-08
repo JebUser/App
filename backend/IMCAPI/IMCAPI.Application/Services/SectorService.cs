@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _sectorRepository = sectorRepository;
         }
 
-        public async Task<IEnumerable<Sector>> GetSectoresAsync()
+        public async Task<IEnumerable<SectorDto>> GetSectoresAsync()
         {
-            return await _sectorRepository.GetSectoresAsync();
+            var sectores = await _sectorRepository.GetSectoresAsync();
+            return sectores.Select(s => new SectorDto(s.Id, s.Nombre));
         }
 
-        public async Task<Sector?> GetSectorByIdAsync(int id)
+        public async Task<SectorDto?> GetSectorByIdAsync(int id)
         {
-            return await _sectorRepository.GetSectorByIdAsync(id);
+            var sector = await _sectorRepository.GetSectorByIdAsync(id);
+            return new SectorDto(sector.Id, sector.Nombre);
         }
 
-        public async Task AddSectorAsync(Sector sector)
+        public async Task AddSectorAsync(SectorDto sectordto)
         {
+            var sector = new Sector
+            {
+                Id = sectordto.Id,
+                Nombre = sectordto.Nombre
+            };
             await _sectorRepository.AddSectorAsync(sector);
         }
 
-        public async Task UpdateSectorAsync(Sector sector)
+        public async Task UpdateSectorAsync(SectorDto sectordto)
         {
-            await _sectorRepository.UpdateSectorAsync(sector);
+            var sector = await _sectorRepository.GetSectorByIdAsync(sectordto.Id);
+            if (sector != null)
+            {
+                sector.Nombre = sectordto.Nombre;
+                await _sectorRepository.UpdateSectorAsync(sector);
+            }
         }
 
         public async Task DeleteSectorAsync(int id)

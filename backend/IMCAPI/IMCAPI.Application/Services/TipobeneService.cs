@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _tipobeneRepository = tipobeneRepository;
         }
 
-        public async Task<IEnumerable<Tipobene>> GetTipobenesAsync()
+        public async Task<IEnumerable<TipobeneDto>> GetTipobenesAsync()
         {
-            return await _tipobeneRepository.GetTipobenesAsync();
+            var tipobenes = await _tipobeneRepository.GetTipobenesAsync();
+            return tipobenes.Select(tb => new TipobeneDto(tb.Id, tb.Nombre));
         }
 
-        public async Task<Tipobene?> GetTipobeneByIdAsync(int id)
+        public async Task<TipobeneDto?> GetTipobeneByIdAsync(int id)
         {
-            return await _tipobeneRepository.GetTipobeneByIdAsync(id);
+            var tipobene = await _tipobeneRepository.GetTipobeneByIdAsync(id);
+            return new TipobeneDto(tipobene.Id, tipobene.Nombre);
         }
 
-        public async Task AddTipobeneAsync(Tipobene tipobene)
+        public async Task AddTipobeneAsync(TipobeneDto tipobenedto)
         {
+            var tipobene = new Tipobene
+            {
+                Id = tipobenedto.Id,
+                Nombre = tipobenedto.Nombre
+            };
             await _tipobeneRepository.AddTipobeneAsync(tipobene);
         }
 
-        public async Task UpdateTipobeneAsync(Tipobene tipobene)
+        public async Task UpdateTipobeneAsync(TipobeneDto tipobenedto)
         {
-            await _tipobeneRepository.UpdateTipobeneAsync(tipobene);
+            var tipobene = await _tipobeneRepository.GetTipobeneByIdAsync(tipobenedto.Id);
+            if (tipobene != null)
+            {
+                tipobene.Nombre = tipobenedto.Nombre;
+                await _tipobeneRepository.UpdateTipobeneAsync(tipobene);
+            }
         }
 
         public async Task DeleteTipobeneAsync(int id)

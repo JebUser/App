@@ -1,4 +1,4 @@
-﻿using IMCAPI.Core.Entities;
+﻿using IMCAPI.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace IMCAPI.Core.Interfaces.Services
 {
     public interface ITipoapoyoService
     {
-        Task<IEnumerable<Tipoapoyo>> GetTipoapoyosAsync();
-        Task<Tipoapoyo?> GetTipoapoyoByIdAsync(int id);
-        Task AddTipoapoyoAsync(Tipoapoyo tipoapoyo);
-        Task UpdateTipoapoyoAsync(Tipoapoyo tipoapoyo);
+        Task<IEnumerable<TipoapoyoDto>> GetTipoapoyosAsync();
+        Task<TipoapoyoDto?> GetTipoapoyoByIdAsync(int id);
+        Task AddTipoapoyoAsync(TipoapoyoDto tipoapoyodto);
+        Task UpdateTipoapoyoAsync(TipoapoyoDto tipoapoyodto);
         Task DeleteTipoapoyoAsync(int id);
     }
 }

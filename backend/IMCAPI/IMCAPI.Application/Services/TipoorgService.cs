@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _tipoorgRepository = tipoorgRepository;
         }
 
-        public async Task<IEnumerable<Tipoorg>> GetTipoorgsAsync()
+        public async Task<IEnumerable<TipoorgDto>> GetTipoorgsAsync()
         {
-            return await _tipoorgRepository.GetTipoorgsAsync();
+            var tipoorgs = await _tipoorgRepository.GetTipoorgsAsync();
+            return tipoorgs.Select(to => new TipoorgDto(to.Id, to.Nombre));
         }
 
-        public async Task<Tipoorg?> GetTipoorgByIdAsync(int id)
+        public async Task<TipoorgDto?> GetTipoorgByIdAsync(int id)
         {
-            return await _tipoorgRepository.GetTipoorgByIdAsync(id);
+            var tipoorg = await _tipoorgRepository.GetTipoorgByIdAsync(id);
+            return new TipoorgDto(tipoorg.Id, tipoorg.Nombre);
         }
 
-        public async Task AddTipoorgAsync(Tipoorg tipoorg)
+        public async Task AddTipoorgAsync(TipoorgDto tipoorgdto)
         {
+            var tipoorg = new Tipoorg
+            {
+                Id = tipoorgdto.Id,
+                Nombre = tipoorgdto.Nombre
+            };
             await _tipoorgRepository.AddTipoorgAsync(tipoorg);
         }
 
-        public async Task UpdateTipoorgAsync(Tipoorg tipoorg)
+        public async Task UpdateTipoorgAsync(TipoorgDto tipoorgdto)
         {
-            await _tipoorgRepository.UpdateTipoorgAsync(tipoorg);
+            var tipoorg = await _tipoorgRepository.GetTipoorgByIdAsync(tipoorgdto.Id);
+            if (tipoorg != null)
+            {
+                tipoorg.Nombre = tipoorgdto.Nombre;
+                await _tipoorgRepository.UpdateTipoorgAsync(tipoorg);
+            }
         }
 
         public async Task DeleteTipoorgAsync(int id)

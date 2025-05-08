@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _tipoidenRepository = tipoidenRepository;
         }
 
-        public async Task<IEnumerable<Tipoiden>> GetTipoidensAsync()
+        public async Task<IEnumerable<TipoidenDto>> GetTipoidensAsync()
         {
-            return await _tipoidenRepository.GetTipoidensAsync();
+            var tipoidens = await _tipoidenRepository.GetTipoidensAsync();
+            return tipoidens.Select(ti => new TipoidenDto(ti.Id, ti.Nombre));
         }
 
-        public async Task<Tipoiden?> GetTipoidenByIdAsync(int id)
+        public async Task<TipoidenDto?> GetTipoidenByIdAsync(int id)
         {
-            return await _tipoidenRepository.GetTipoidenByIdAsync(id);
+            var tipoiden = await _tipoidenRepository.GetTipoidenByIdAsync(id);
+            return new TipoidenDto(tipoiden.Id, tipoiden.Nombre);
         }
 
-        public async Task AddTipoidenAsync(Tipoiden tipoiden)
+        public async Task AddTipoidenAsync(TipoidenDto tipoidendto)
         {
+            var tipoiden = new Tipoiden
+            {
+                Id = tipoidendto.Id,
+                Nombre = tipoidendto.Nombre
+            };
             await _tipoidenRepository.AddTipoidenAsync(tipoiden);
         }
 
-        public async Task UpdateTipoidenAsync(Tipoiden tipoiden)
+        public async Task UpdateTipoidenAsync(TipoidenDto tipoidendto)
         {
-            await _tipoidenRepository.UpdateTipoidenAsync(tipoiden);
+            var tipoiden = await _tipoidenRepository.GetTipoidenByIdAsync(tipoidendto.Id);
+            if (tipoiden != null)
+            {
+                tipoiden.Nombre = tipoidendto.Nombre;
+                await _tipoidenRepository.UpdateTipoidenAsync(tipoiden);
+            }
         }
 
         public async Task DeleteTipoidenAsync(int id)

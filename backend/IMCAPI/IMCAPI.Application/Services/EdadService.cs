@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _edadRepository = edadRepository;
         }
 
-        public async Task<IEnumerable<Edad>> GetEdadesAsync()
+        public async Task<IEnumerable<EdadDto>> GetEdadesAsync()
         {
-            return await _edadRepository.GetEdadesAsync();
+            var edades = await _edadRepository.GetEdadesAsync();
+            return edades.Select(e => new EdadDto(e.Id, e.Rango));
         }
 
-        public async Task<Edad?> GetEdadByIdAsync(int id)
+        public async Task<EdadDto?> GetEdadByIdAsync(int id)
         {
-            return await _edadRepository.GetEdadByIdAsync(id);
+            var edad = await _edadRepository.GetEdadByIdAsync(id);
+            return new EdadDto(edad.Id, edad.Rango);
         }
 
-        public async Task AddEdadAsync(Edad edad)
+        public async Task AddEdadAsync(EdadDto edaddto)
         {
+            var edad = new Edad
+            {
+                Id = edaddto.Id,
+                Rango = edaddto.Rango
+            };
             await _edadRepository.AddEdadAsync(edad);
         }
 
-        public async Task UpdateEdadAsync(Edad edad)
+        public async Task UpdateEdadAsync(EdadDto edaddto)
         {
-            await _edadRepository.UpdateEdadAsync(edad);
+            var edad = await _edadRepository.GetEdadByIdAsync(edaddto.Id);
+            if (edad != null)
+            {
+                edad.Rango = edaddto.Rango;
+                await _edadRepository.UpdateEdadAsync(edad);
+            }
         }
 
         public async Task DeleteEdadAsync(int id)

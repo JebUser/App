@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _tipoapoyoRepository = tipoapoyoRepository;
         }
 
-        public async Task<IEnumerable<Tipoapoyo>> GetTipoapoyosAsync()
+        public async Task<IEnumerable<TipoapoyoDto>> GetTipoapoyosAsync()
         {
-            return await _tipoapoyoRepository.GetTipoapoyosAsync();
+            var tipoapoyos = await _tipoapoyoRepository.GetTipoapoyosAsync();
+            return tipoapoyos.Select(ta => new TipoapoyoDto(ta.Id, ta.Nombre));
         }
 
-        public async Task<Tipoapoyo?> GetTipoapoyoByIdAsync(int id)
+        public async Task<TipoapoyoDto?> GetTipoapoyoByIdAsync(int id)
         {
-            return await _tipoapoyoRepository.GetTipoapoyoByIdAsync(id);
+            var tipoapoyo = await _tipoapoyoRepository.GetTipoapoyoByIdAsync(id);
+            return new TipoapoyoDto(tipoapoyo.Id, tipoapoyo.Nombre);
         }
 
-        public async Task AddTipoapoyoAsync(Tipoapoyo tipoapoyo)
+        public async Task AddTipoapoyoAsync(TipoapoyoDto tipoapoyodto)
         {
+            var tipoapoyo = new Tipoapoyo
+            {
+                Id = tipoapoyodto.Id,
+                Nombre = tipoapoyodto.Nombre
+            };
             await _tipoapoyoRepository.AddTipoapoyoAsync(tipoapoyo);
         }
 
-        public async Task UpdateTipoapoyoAsync(Tipoapoyo tipoapoyo)
+        public async Task UpdateTipoapoyoAsync(TipoapoyoDto tipoapoyodto)
         {
-            await _tipoapoyoRepository.UpdateTipoapoyoAsync(tipoapoyo);
+            var tipoapoyo = await _tipoapoyoRepository.GetTipoapoyoByIdAsync(tipoapoyodto.Id);
+            if (tipoapoyo != null)
+            {
+                tipoapoyo.Nombre = tipoapoyodto.Nombre;
+                await _tipoapoyoRepository.UpdateTipoapoyoAsync(tipoapoyo);
+            }
         }
 
         public async Task DeleteTipoapoyoAsync(int id)

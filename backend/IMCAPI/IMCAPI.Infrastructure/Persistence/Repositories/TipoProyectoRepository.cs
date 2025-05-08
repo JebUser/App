@@ -31,5 +31,20 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
             _context.tipoProyecto.Add(tipoproyecto); // Agrega el nuevo tipo de proyecto.
             await _context.SaveChangesAsync(); // Guarda los cambios.
         }
+        public async Task UpdateTipoProyectoAsync(Tipoproyecto tipoproyecto)
+        {
+            _context.tipoProyecto.Update(tipoproyecto);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTipoProyectoAsync(int id)
+        {
+            var tipoproyecto = await _context.tipoProyecto.FindAsync(id);
+            if (tipoproyecto != null)
+            {
+                _context.tipoProyecto.Remove(tipoproyecto);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

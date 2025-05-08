@@ -1,4 +1,4 @@
-﻿using IMCAPI.Core.Entities;
+﻿using IMCAPI.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace IMCAPI.Core.Interfaces.Services
 {
     public interface IEdadService
     {
-        Task<IEnumerable<Edad>> GetEdadesAsync();
-        Task<Edad?> GetEdadByIdAsync(int id);
-        Task AddEdadAsync(Edad edad);
-        Task UpdateEdadAsync(Edad edad);
+        Task<IEnumerable<EdadDto>> GetEdadesAsync();
+        Task<EdadDto?> GetEdadByIdAsync(int id);
+        Task AddEdadAsync(EdadDto edaddto);
+        Task UpdateEdadAsync(EdadDto edaddto);
         Task DeleteEdadAsync(int id);
     }
 }

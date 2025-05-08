@@ -12,5 +12,7 @@ namespace IMCAPI.Core.Interfaces.Repositories
         Task<IEnumerable<Tipoproyecto>> GetTipoProyectosAsync();
         Task<Tipoproyecto?> GetTipoProyectoIdAsync(int id);
         Task AddTipoProyectoAsync(Tipoproyecto tipoproyecto);
+        Task UpdateTipoProyectoAsync(Tipoproyecto tipoproyecto);
+        Task DeleteTipoProyectoAsync(int id);
     }
 }

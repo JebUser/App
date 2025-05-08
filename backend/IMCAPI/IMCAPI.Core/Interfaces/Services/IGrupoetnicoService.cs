@@ -1,4 +1,4 @@
-﻿using IMCAPI.Core.Entities;
+﻿using IMCAPI.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace IMCAPI.Core.Interfaces.Services
 {
     public interface IGrupoetnicoService
     {
-        Task<IEnumerable<Grupoetnico>> GetGrupoetnicosAsync();
-        Task<Grupoetnico?> GetGrupoetnicoByIdAsync(int id);
-        Task AddGrupoetnicoAsync(Grupoetnico grupoetnico);
-        Task UpdateGrupoetnicoAsync(Grupoetnico grupoetnico);
+        Task<IEnumerable<GrupoetnicoDto>> GetGrupoetnicosAsync();
+        Task<GrupoetnicoDto?> GetGrupoetnicoByIdAsync(int id);
+        Task AddGrupoetnicoAsync(GrupoetnicoDto grupoetnicodto);
+        Task UpdateGrupoetnicoAsync(GrupoetnicoDto grupoetnicodto);
         Task DeleteGrupoetnicoAsync(int id);
     }
 }

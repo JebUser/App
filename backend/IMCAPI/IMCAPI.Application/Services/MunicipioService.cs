@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,17 +19,26 @@ namespace IMCAPI.Application.Services
             _municipioRepository = municipioRepository;
         }
 
-        public async Task<IEnumerable<Municipio>> GetMunicipiosAsync()
+        public async Task<IEnumerable<MunicipioDto>> GetMunicipiosAsync()
         {
             var municipios = await _municipioRepository.GetMunicipiosAsync();
-            return municipios;
+
+            return municipios.Select(m => new MunicipioDto(
+                m.Id,
+                m.Nombre,
+                new DepartamentoDto(m.departamento.Id, m.departamento.Nombre)
+            ));
         }
 
-        public async Task<Municipio?> GetMunicipioIdAsync(int id)
+        public async Task<MunicipioDto?> GetMunicipioIdAsync(int id)
         {
             var municipio = await _municipioRepository.GetMunicipioIdAsync(id);
             if (municipio == null) return null;
-            return municipio;
+            return new MunicipioDto(
+                municipio.Id,
+                municipio.Nombre,
+                new DepartamentoDto(municipio.departamento.Id, municipio.departamento.Nombre)
+            );
         }
     }
 }

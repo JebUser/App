@@ -6,6 +6,6 @@
         public required string Nombre { get; set; }
 
         // Relación con Organizaciones.
-        public required List<Organizacion> organizaciones { get; set; }
+        public List<Organizacion> organizaciones { get; set; }
     }
 }

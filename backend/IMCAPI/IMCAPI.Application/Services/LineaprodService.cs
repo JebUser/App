@@ -1,4 +1,5 @@
 ﻿using IMCAPI.Core.Entities;
+using IMCAPI.Core.DTO;
 using IMCAPI.Core.Interfaces.Repositories;
 using IMCAPI.Core.Interfaces.Services;
 using System;
@@ -18,24 +19,36 @@ namespace IMCAPI.Application.Services
             _lineaprodRepository = lineaprodRepository;
         }
 
-        public async Task<IEnumerable<Lineaprod>> GetLineaprodsAsync()
+        public async Task<IEnumerable<LineaprodDto>> GetLineaprodsAsync()
         {
-            return await _lineaprodRepository.GetLineaprodsAsync();
+            var lineaprods = await _lineaprodRepository.GetLineaprodsAsync();
+            return lineaprods.Select(lp => new LineaprodDto(lp.Id, lp.Nombre));
         }
 
-        public async Task<Lineaprod?> GetLineaprodByIdAsync(int id)
+        public async Task<LineaprodDto?> GetLineaprodByIdAsync(int id)
         {
-            return await _lineaprodRepository.GetLineaprodByIdAsync(id);
+            var lineaprod = await _lineaprodRepository.GetLineaprodByIdAsync(id);
+            return new LineaprodDto(lineaprod.Id, lineaprod.Nombre);
         }
 
-        public async Task AddLineaprodAsync(Lineaprod lineaprod)
+        public async Task AddLineaprodAsync(LineaprodDto lineaproddto)
         {
+            var lineaprod = new Lineaprod
+            {
+                Id = lineaproddto.Id,
+                Nombre = lineaproddto.Nombre
+            };
             await _lineaprodRepository.AddLineaprodAsync(lineaprod);
         }
 
-        public async Task UpdateLineaprodAsync(Lineaprod lineaprod)
+        public async Task UpdateLineaprodAsync(LineaprodDto lineaproddto)
         {
-            await _lineaprodRepository.UpdateLineaprodAsync(lineaprod);
+            var lineaprod = await _lineaprodRepository.GetLineaprodByIdAsync(lineaproddto.Id);
+            if (lineaprod != null)
+            {
+                lineaprod.Nombre = lineaproddto.Nombre;
+                await _lineaprodRepository.UpdateLineaprodAsync(lineaprod);
+            }
         }
 
         public async Task DeleteLineaprodAsync(int id)
