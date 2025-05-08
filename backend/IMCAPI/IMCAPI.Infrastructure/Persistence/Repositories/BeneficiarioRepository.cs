@@ -24,6 +24,16 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
                 .Include(b => b.municipio)
                 .Include(b => b.sector)
                 .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.municipio)
+                        .ThenInclude(m => m.departamento)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.tipoorg)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.tipoactividad)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.lineaprod)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.tipoapoyo)
                 .ToListAsync();
         }
 
@@ -38,6 +48,16 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
                 .Include(b => b.municipio)
                 .Include(b => b.sector)
                 .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.municipio)
+                        .ThenInclude(m => m.departamento)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.tipoorg)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.tipoactividad)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.lineaprod)
+                .Include(b => b.Organizaciones)
+                    .ThenInclude(o => o.tipoapoyo)
                 .Where(b => b.Id == id)
                 .FirstOrDefaultAsync();
         }

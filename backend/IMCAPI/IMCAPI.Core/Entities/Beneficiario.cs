@@ -3,16 +3,16 @@
     public class Beneficiario
     {
         public int Id { get; set; }
-        public string Identificacion { get; set; } = string.Empty;
+        public string? Identificacion { get; set; } = string.Empty;
         public required string Nombre1 { get; set; }
-        public string Nombre2 { get; set; } = string.Empty;
+        public string? Nombre2 { get; set; } = string.Empty;
         public required string Apellido1 { get; set; }
-        public string Apellido2 { get; set; } = string.Empty;
-        public string Celular { get; set; } = string.Empty;
+        public string? Apellido2 { get; set; } = string.Empty;
+        public string? Celular { get; set; } = string.Empty;
         public int? Tipoiden_id { get; set; } = 0;
         public int Generos_id { get; set; } = 0;
         public int? Edades_id { get; set; } = 0;
-        public byte[] Firma { get; set; } = default;
+        public byte[]? Firma { get; set; }
         public int? Grupoetnico_id { get; set; } = 0;
         public int? Tipobene_id { get; set; } = 0;
         public int? Municipios_id { get; set; } = 0;

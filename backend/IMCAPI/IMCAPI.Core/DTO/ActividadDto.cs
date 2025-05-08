@@ -14,9 +14,9 @@ namespace IMCAPI.Core.DTO
         public DateTime FechaInicio { get; set; }
         public DateTime? FechaFinal { get; set; } = null;
         public LugarDto lugar {  get; set; }
-        public List<BeneficiarioDto> beneficiarios { get; set; }
+        public List<BeneficiarioDto>? beneficiarios { get; set; }
         
-        public ActividadDto(int id, string nombre, DateTime fechainicio, DateTime? fechafinal, LugarDto lugar, List<BeneficiarioDto> beneficiarios)
+        public ActividadDto(int id, string nombre, DateTime fechainicio, DateTime? fechafinal, LugarDto lugar, List<BeneficiarioDto>? beneficiarios)
         {
             Id = id;
             Nombre = nombre;
