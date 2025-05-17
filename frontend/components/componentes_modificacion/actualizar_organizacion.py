@@ -1,5 +1,10 @@
 import streamlit as st
 from utils.utils import navigate_to
+from assets.data import obtener_lista_municipios
+from assets.data import obtener_lista_tipos_organizacion
+from assets.data import obtener_lista_tipos_apoyo
+#from assets.data import obtener_lista_lineas_producto
+from assets.data import obtener_lista_tipos_identificacion
 
 def pantalla_actualizar_organizacion(organizacion_data=None):
     """
@@ -21,6 +26,13 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
                 'org_mujeres': 'Sí'
             }
     """
+    municipios = obtener_lista_municipios(formato='select')
+    Orgnizaciones = obtener_lista_tipos_organizacion(formato='select')
+    Tipoapoyos = obtener_lista_tipos_apoyo(formato='select')
+ #   Lineaprods = obtener_lista_lineas_producto(formato='select')
+    Tipoidens = obtener_lista_tipos_identificacion(formato='select')
+    
+
     st.markdown("## Actualizar organización")
     
     # Botón para volver atrás
@@ -74,10 +86,13 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
         )
 
     with col2:
-        municipio = st.text_input(
-            "Municipio*", 
-            value=organizacion_data.get('municipio', '')
-        )
+        municipio = st.selectbox(
+        "Municipio*",
+        options=municipios,
+        index=0,  # Selecciona el primer elemento por defecto
+        key="municipio_select",
+        help="Seleccione el municipio de la lista"
+    )
         
         num_mujeres = st.number_input(
             "Número de mujeres*", 

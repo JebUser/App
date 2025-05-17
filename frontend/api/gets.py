@@ -5,7 +5,7 @@ import streamlit as st
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BASE_URL = "https://localhost:57740/api"
+BASE_URL = "https://localhost:50604/api"
 
 def consultar_actividades():
     """Obtiene todas las actividades con sus participantes"""
@@ -92,3 +92,98 @@ def format_fecha(fecha_str):
         return fecha.strftime("%d/%m/%Y")
     except ValueError:
         return fecha_str  # Si falla el parseo, devolver el original
+    
+
+def obtener_generos():
+    """Obtiene los géneros desde la API (datos crudos)"""
+    try:
+        response = requests.get(f"{BASE_URL}/Generos", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener géneros: {e}")
+        return None
+
+
+def obtener_grupos_etnicos():
+    try:
+        response = requests.get(f"{BASE_URL}/Grupoetnicos", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener grupos étnicos: {e}")
+        return None
+    
+def obtener_lineas_producto():
+    try:
+        response = requests.get(f"{BASE_URL}/Lineaprods", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener líneas de producto: {e}")
+        return None
+    
+def obtener_municipios():
+    try:
+        response = requests.get(f"{BASE_URL}/Municipios", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener municipios: {e}")
+        return None  
+    
+def obtener_organizaciones():
+    try:
+        response = requests.get(f"{BASE_URL}/Organizaciones", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener organizaciones: {e}")
+        return None
+    
+def obtener_sectores():
+    try:
+        response = requests.get(f"{BASE_URL}/Sectores", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener sectores: {e}")
+        return None
+
+def obtener_tipos_apoyo():
+    try:
+        response = requests.get(f"{BASE_URL}/Tipoapoyos", verify=False)
+        response.raise_for_status()
+        return response.json() or []  # Devuelve array vacío si es None
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener tipos de apoyo: {e}")
+        return []
+    
+
+def obtener_tipos_beneficiario():
+    try:
+        response = requests.get(f"{BASE_URL}/Tipobenes", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener tipos de beneficiario: {e}")
+        return None
+    
+
+def obtener_tipos_identificacion():
+    try:
+        response = requests.get(f"{BASE_URL}/Tipoidens", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener tipos de identificación: {e}")
+        return None
+    
+def obtener_tipos_organizacion():
+    try:
+        response = requests.get(f"{BASE_URL}/Tipoorgs", verify=False)
+        response.raise_for_status()
+        return response.json() or []  # Devuelve array vacío si es None
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener tipos de organización: {e}")
+        return []
