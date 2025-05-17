@@ -69,7 +69,7 @@ def obtener_lista_organizaciones(formato='completo'):
         return []
 
     if formato == 'select':
-        return [f"{org['nombre']} - {org['municipio']['nombre']}" for org in datos_api]
+        return [f"{org["nombre"]} - {org["municipio"]["nombre"]}" for org in datos_api]
     elif formato == 'minimo':
         return [{
             "id": org["id"],
