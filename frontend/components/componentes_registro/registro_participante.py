@@ -2,7 +2,7 @@ import streamlit as st
 from utils.utils import navigate_to
 
 def pantalla_registro_participante():
-    st.markdown("## Registro participante")
+    st.markdown("## Registro participante (beneficiario)")
     if st.button("⬅️ Atrás"):
         navigate_to("registro_evento")
         st.rerun()

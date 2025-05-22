@@ -11,7 +11,7 @@ def pantalla_registro_evento():
     st.date_input("Fecha")
     st.text_input("Lugar")
 
-    st.markdown("### Lista participantes")
+    st.markdown("### Lista participantes (beneficiario)")
     st.write("Aquí iría la tabla de participantes...")
 
     col1, col2, col3 = st.columns(3)
@@ -19,6 +19,6 @@ def pantalla_registro_evento():
         if st.button("Registrar participante"):
             navigate_to('registrar',"registro_participante")
     with col2:
-        st.file_uploader("Subir archivo de participantes", type=["xlsx", "csv"])
+        st.file_uploader("Subir archivo de participantes (beneficiario)", type=["xlsx", "csv"])
     with col3:
         st.button("Terminar")
