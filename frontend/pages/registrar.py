@@ -9,6 +9,7 @@ from components.componentes_registro.registro_evento import pantalla_registro_ev
 from components.componentes_registro.registro_participante import pantalla_registro_participante
 from components.componentes_registro.registro_organizacion import pantalla_registro_organizacion
 from components.componentes_registro.registro_archivo import pantalla_registro_archivo
+from components.componentes_registro.registro_proyecto import pantalla_registro_proyecto
 
 # Inicializar el estado de la sesión
 init_session_state()
@@ -30,3 +31,5 @@ elif st.session_state.subpage == 'registro_archivo':
     pantalla_registro_archivo()
 elif st.session_state.subpage == 'registro_organizacion':
     pantalla_registro_organizacion()
+elif st.session_state.subpage == 'registro_proyecto':
+    pantalla_registro_proyecto()

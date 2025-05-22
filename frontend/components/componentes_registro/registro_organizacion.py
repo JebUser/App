@@ -5,7 +5,6 @@ from assets.data import obtener_lista_tipos_organizacion
 from assets.data import obtener_lista_tipos_apoyo
 #from assets.data import obtener_lista_lineas_producto
 
-
 def pantalla_registro_organizacion():
 
     municipios = obtener_lista_municipios(formato='select')

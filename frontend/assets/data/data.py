@@ -1,4 +1,16 @@
-from api.gets import obtener_generos, obtener_grupos_etnicos, obtener_lineas_producto, obtener_municipios, obtener_organizaciones, obtener_sectores,  obtener_tipos_beneficiario, obtener_tipos_identificacion, obtener_tipos_organizacion       # Importación actualizada
+from api.gets import (obtener_generos, 
+                      obtener_grupos_etnicos, 
+                      obtener_lineas_producto, 
+                      obtener_municipios, 
+                      obtener_organizaciones, 
+                      obtener_sectores,  
+                      obtener_tipos_beneficiario, 
+                      obtener_tipos_identificacion, 
+                      obtener_tipos_organizacion, 
+                      obtener_tipos_apoyo,
+                      obtener_tipos_identificacion,
+                      obtener_tipos_proyectos,
+                      obtener_tipos_actividad)       # Importación actualizada
 import streamlit as st
 
 def obtener_lista_generos():
@@ -108,12 +120,6 @@ def obtener_lista_sectores(formato='normal'):
             "id": sector.get("id", 0),
             "nombre": sector.get("nombre", "Sin nombre")
         } for sector in datos_api]
-    
-from api.gets import (
-    # ... importaciones existentes
-    obtener_tipos_apoyo  # Nueva importación
-)
-
 
 def obtener_lista_tipos_apoyo(formato='normal'):
     datos_api = obtener_tipos_apoyo()
@@ -154,12 +160,6 @@ def obtener_lista_tipos_beneficiario(formato='normal'):
             "nombre": tipo.get("nombre", "Sin nombre")
         } for tipo in datos_api]
     
-
-from api.gets import (
-    # ... importaciones existentes
-    obtener_tipos_identificacion  # Nueva importación
-)
-
 # ... (funciones existentes)
 
 def obtener_lista_tipos_identificacion(formato='normal'):
@@ -205,3 +205,25 @@ def obtener_lista_tipos_organizacion(formato='normal'):
             "id": tipo.get("id", 0),
             "nombre": tipo.get("nombre", "Sin nombre")
         } for tipo in datos_api if isinstance(tipo, dict)]
+    
+def obtener_lista_tipos_proyectos():
+    """Obtiene y formatea los géneros para uso en la aplicación"""
+    datos_api = obtener_tipos_proyectos()
+    if datos_api is None:
+        return []
+    
+    return [{
+        "id": g.get("id", 0),
+        "nombre": g.get("nombre", "Sin nombre")
+    } for g in datos_api]
+
+def obtener_lista_tipos_actividad():
+    """Obtiene y formatea los géneros para uso en la aplicación"""
+    datos_api = obtener_tipos_actividad()
+    if datos_api is None:
+        return []
+    
+    return [{
+        "id": g.get("id", 0),
+        "nombre": g.get("nombre", "Sin nombre")
+    } for g in datos_api]
