@@ -1,4 +1,4 @@
-from api.gets import obtener_generos, obtener_grupos_etnicos, obtener_lineas_producto, obtener_municipios, obtener_organizaciones, obtener_sectores,  obtener_tipos_beneficiario, obtener_tipos_identificacion, obtener_tipos_organizacion       # Importación actualizada
+from api.gets import obtener_generos, obtener_grupos_etnicos, obtener_lineas_produccion, obtener_municipios, obtener_organizaciones, obtener_sectores,  obtener_tipos_beneficiario, obtener_tipos_identificacion, obtener_tipos_organizacion       # Importación actualizada
 import streamlit as st
 
 def obtener_lista_generos():
@@ -25,18 +25,24 @@ def obtener_lista_grupos_etnicos():
     } for g in datos_api]
 
 
-def obtener_lista_lineas_producto():
-    datos_api = obtener_lineas_producto()
+def obtener_lista_lineas_produccion(formato='completo'):
+    """
+    Obtiene y formatea las líneas de producción para la aplicación
+    Formatos disponibles:
+    - 'completo': Retorna todos los datos estructurados.
+    - 'select': Retorna lista para dropdowns [nombre]
+    """
+    datos_api = obtener_lineas_produccion()
     if datos_api is None:
         return []
     
-    return [{
-        "id": lp.get("id", 0),
-        "codigo": lp.get("codigo", ""),
-        "nombre": lp.get("nombre", "Sin nombre"),
-        "descripcion": lp.get("descripcion", ""),
-        "activo": lp.get("activo", False)
-    } for lp in datos_api]
+    if formato == 'select':
+        return [f"{lp['nombre']}" for lp in datos_api]
+    elif formato == 'completo':
+        return [{
+            "id": lp.get("id", 0),
+            "nombre": lp.get("nombre", "Sin nombre")
+        } for lp in datos_api]
 
 def obtener_lista_municipios(formato='completo'):
     """

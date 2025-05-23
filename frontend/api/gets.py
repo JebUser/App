@@ -5,7 +5,7 @@ import streamlit as st
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BASE_URL = "https://localhost:50604/api"
+BASE_URL = "https://localhost:7032/api"
 
 def consultar_actividades():
     """Obtiene todas las actividades con sus participantes"""
@@ -114,13 +114,13 @@ def obtener_grupos_etnicos():
         st.error(f"Error al obtener grupos étnicos: {e}")
         return None
     
-def obtener_lineas_producto():
+def obtener_lineas_produccion():
     try:
         response = requests.get(f"{BASE_URL}/Lineaprods", verify=False)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        st.error(f"Error al obtener líneas de producto: {e}")
+        st.error(f"Error al obtener líneas de producción: {e}")
         return None
     
 def obtener_municipios():
