@@ -1,6 +1,5 @@
 import streamlit as st
 from utils.utils import navigate_to
-from assets.data import obtener_lista_municipios, obtener_lista_tipos_organizacion, obtener_lista_tipos_apoyo, obtener_lista_lineas_produccion
 from api.gets import obtener_municipios, obtener_tipos_organizacion, obtener_tipos_apoyo, obtener_lineas_produccion, obtener_tipos_actividad
 from api.puts import modificar_organizacion
 
