@@ -38,7 +38,7 @@ def mostrar_consultar_actividades():
 
     # Mostrar participantes por actividad
     actividades = [act["Nombre de la actividad"] for act in datos_actividades]
-    actividad_seleccionada = st.selectbox("Seleccione una actividad para ver participantes:", actividades, key="selector_actividad")
+    actividad_seleccionada = st.selectbox("Seleccione una actividad para ver participantes (beneficiario):", actividades, key="selector_actividad")
 
     if actividad_seleccionada:
         actividad = next(act for act in datos_actividades if act["Nombre de la actividad"] == actividad_seleccionada)

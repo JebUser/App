@@ -187,3 +187,21 @@ def obtener_tipos_organizacion():
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener tipos de organización: {e}")
         return []
+    
+def obtener_tipos_proyectos():
+    try:
+        response = requests.get(f"{BASE_URL}/TipoProyectos", verify=False)
+        response.raise_for_status()
+        return response.json() or []  # Devuelve array vacío si es None
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener tipos de proyecto: {e}")
+        return []
+
+def obtener_tipos_actividad():
+    try:
+        response = requests.get(f"{BASE_URL}/Tipoactividades", verify=False)
+        response.raise_for_status()
+        return response.json() or []  # Devuelve array vacío si es None
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener tipos de actividades: {e}")
+        return []
