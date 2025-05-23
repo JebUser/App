@@ -16,6 +16,16 @@ def consultar_actividades():
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener actividades: {e}")
         return []
+    
+def obtener_actividades():
+    """Obtiene todas las actividades con los datos."""
+    try:
+        response = requests.get(f"{BASE_URL}/Actividades", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener actividades: {e}")
+        return []
 
 def procesar_datos_actividades(datos_api):
     """Procesa los datos crudos de la API a un formato estructurado"""
@@ -92,7 +102,16 @@ def format_fecha(fecha_str):
         return fecha.strftime("%d/%m/%Y")
     except ValueError:
         return fecha_str  # Si falla el parseo, devolver el original
-    
+
+def obtener_proyectos():
+    """Obtiene los proyectos desde la API"""
+    try:
+        response = requests.get(f"{BASE_URL}/Proyectos", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener proyectos: {e}")
+        return None
 
 def obtener_generos():
     """Obtiene los géneros desde la API (datos crudos)"""
