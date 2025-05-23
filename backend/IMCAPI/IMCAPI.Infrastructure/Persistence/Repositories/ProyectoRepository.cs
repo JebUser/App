@@ -36,8 +36,16 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
             _context.Proyectos.Add(proyecto); // Agrega un nuevo proyecto.
             await _context.SaveChangesAsync(); // Guarda los cambios.
         }
-        public async Task UpdateProyectoAsync(Proyecto proyecto)
+        public async Task UpdateProyectoAsync(Proyecto proyecto, List<int> actividadesIds)
         {
+            var actividades = await _context.Actividades
+                .Where(a => actividadesIds.Contains(a.Id))
+                .ToListAsync();
+            proyecto.actividades.Clear();
+            foreach (var actividad in actividades)
+            {
+                proyecto.actividades.Add(actividad);
+            }
             _context.Proyectos.Update(proyecto); // Actualiza el proyecto.
             await _context.SaveChangesAsync(); // Guarda los cambios.
         }

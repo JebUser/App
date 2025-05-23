@@ -4,15 +4,18 @@ from streamlit_modal import Modal
 from assets.data.organizaciones import organizaciones_ejemplo
 from utils.utils import navigate_to
 from datetime import datetime
+from api.puts import modificar_organizacion
+from api.gets import obtener_organizaciones
 
 def pantalla_modificar_organizacion():
     # Botón para volver atrás
     if st.button("⬅️ Volver al menú principal"):
         navigate_to("modificar")
     
-    # Convertir datos a DataFrame y asegurar formato de fecha
-    df = pd.DataFrame(organizaciones_ejemplo)
-    df['fecha_creacion'] = pd.to_datetime(df['fecha_creacion'])
+    # Obtener las organizaciones.
+    organizaciones = obtener_organizaciones()
+    # Convertir datos a DataFrame.
+    df = pd.DataFrame(organizaciones)
     
     # Configurar el modal para confirmar eliminación
     modal_eliminar = Modal(
@@ -24,40 +27,14 @@ def pantalla_modificar_organizacion():
 
     # Sección de búsqueda/filtrado
     with st.expander("🔍 Buscar/Filtrar organizaciones", expanded=True):
-        col1, col2 = st.columns(2)
-        with col1:
-            filtro_nombre = st.text_input("Buscar por nombre")
-        with col2:
-            # Filtro por antigüedad
-            filtro_antiguedad = st.selectbox(
-                "Ordenar por antigüedad",
-                options=[
-                    "Todas (sin ordenar)",
-                    "Más recientes primero",
-                    "Más antiguas primero"
-                    
-                ],
-                index=0
-            )
+        filtro_nombre = st.text_input("Buscar por nombre")
         
         # Aplicar filtros
         if filtro_nombre:
             df = df[df['nombre'].str.contains(filtro_nombre, case=False)]
-        
-        # Ordenar por antigüedad
-        if filtro_antiguedad == "Más recientes primero":
-            df = df.sort_values('fecha_creacion', ascending=False)
-        elif filtro_antiguedad == "Más antiguas primero":
-            df = df.sort_values('fecha_creacion', ascending=True)
 
     # Mostrar tabla de organizaciones
     st.subheader("Listado de organizaciones")
-    
-    # Mostrar resumen del filtrado
-    if filtro_antiguedad != "Todas (sin ordenar)":
-        st.caption(f"Mostrando {len(df)} organizaciones ordenadas por {filtro_antiguedad.lower()}")
-    else:
-        st.caption(f"Mostrando {len(df)} organizaciones")
     
     # Encabezado de columnas
     col1, col2 = st.columns([4, 1])
@@ -74,12 +51,6 @@ def pantalla_modificar_organizacion():
             # Columna 1: Nombre y detalles
             with cols[0]:
                 st.markdown(f"**{org['nombre']}**")
-                
-                # Calcular antigüedad en años
-                antiguedad = (datetime.now() - org['fecha_creacion']).days // 365
-                antiguedad_text = f"{antiguedad} año{'s' if antiguedad != 1 else ''}"
-                
-                st.caption(f"🕰️ {antiguedad_text} | 📅 {org['fecha_creacion'].strftime('%d/%m/%Y')}")
             
             # Columna 2: Botones de acción
             with cols[1]:

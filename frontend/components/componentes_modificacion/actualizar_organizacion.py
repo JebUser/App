@@ -1,10 +1,7 @@
 import streamlit as st
 from utils.utils import navigate_to
-from assets.data import obtener_lista_municipios
-from assets.data import obtener_lista_tipos_organizacion
-from assets.data import obtener_lista_tipos_apoyo
-#from assets.data import obtener_lista_lineas_producto
-from assets.data import obtener_lista_tipos_identificacion
+from api.gets import obtener_municipios, obtener_tipos_organizacion, obtener_tipos_apoyo, obtener_lineas_produccion, obtener_tipos_actividad
+from api.puts import modificar_organizacion
 
 def pantalla_actualizar_organizacion(organizacion_data=None):
     """
@@ -13,25 +10,32 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
     Args:
         organizacion_data (dict): Diccionario con los datos actuales de la organización
             Ejemplo: {
-                'nombre': 'Org Ejemplo',
-                'nit': '123456789',
-                'tipo': 'ONG',
-                'linea_productiva': 'Agricultura',
-                'num_integrantes': 15,
-                'departamento': 'Cundinamarca',
-                'municipio': 'Bogotá',
-                'num_mujeres': 8,
-                'tipo_apoyo': 'Capacitación',
-                'otro_apoyo': 'Semillas',
-                'org_mujeres': 'Sí'
+                "id": 1,
+                "nombre": "COOAGRODOVIO",
+                "municipio": {
+                    "id": 1103,
+                    "nombre": "El Dovio",
+                    "departamento": {
+                        "id": 30,
+                        "nombre": "Valle del Cauca"
+                    }
+                },
+                "nit": null,
+                "integrantes": null,
+                "nummujeres": null,
+                "orgmujeres": null,
+                "tipoorg": null,
+                "tipoactividad": null,
+                "lineaprod": null,
+                "tipoapoyo": null
             }
     """
-    municipios = obtener_lista_municipios(formato='select')
-    Orgnizaciones = obtener_lista_tipos_organizacion(formato='select')
-    Tipoapoyos = obtener_lista_tipos_apoyo(formato='select')
- #   Lineaprods = obtener_lista_lineas_producto(formato='select')
-    Tipoidens = obtener_lista_tipos_identificacion(formato='select')
-    
+    # Datos completos
+    municipios = obtener_municipios()
+    Tipoorgs = obtener_tipos_organizacion()
+    Tipoapoyos = obtener_tipos_apoyo()
+    Lineaprods = obtener_lineas_produccion()
+    Tipoactividades = obtener_tipos_actividad()
 
     st.markdown("## Actualizar organización")
     
@@ -56,74 +60,85 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
         )
         
         nit = st.text_input(
-            "NIT*", 
+            "NIT", 
             value=organizacion_data.get('nit', ''),
             help="Número de Identificación Tributaria"
         )
         
         tipo = st.selectbox(
-            "Tipo de organización*", 
-            options=["ONG", "Fundación", "Cooperativa", "Asociación", "Otra"],
-            index=["ONG", "Fundación", "Cooperativa", "Asociación", "Otra"].index(
-                organizacion_data.get('tipo', 'ONG')
-            )
+            "Tipo de organización", 
+            options=Tipoorgs,
+            format_func=lambda x: x['nombre'],
+            index=organizacion_data.get('tipoorg').get('id')-1 if organizacion_data["tipoorg"] != None else 0,
+            key="tipoorg_select",
+            help="Selecciona el tipo de organización de la lista"
         )
+        # TODO: Aplicar POST para permitir crear nuevos Tipos de Organización.
         
-        linea_productiva = st.text_input(
-            "Línea productiva (si aplica)", 
-            value=organizacion_data.get('linea_productiva', '')
+        linea_productiva = st.selectbox(
+            "Línea productiva",
+            options = Lineaprods,
+            format_func=lambda x: x['nombre'],
+            index=organizacion_data.get('lineaprod').get('id')-1 if organizacion_data["lineaprod"] != None else 0,
+            key="lineaprod_select",
+            help="Selecciona la línea de producción de la lista"
         )
+        # TODO: Aplicar POST para permitir crear nuevas Líneas de Producción.
         
         num_integrantes = st.number_input(
-            "Número de integrantes*", 
-            min_value=1, 
-            value=organizacion_data.get('num_integrantes', 1)
-        )
-        
-        departamento = st.text_input(
-            "Departamento*", 
-            value=organizacion_data.get('departamento', '')
+            "Número de integrantes", 
+            min_value=-1, 
+            value=organizacion_data.get('num_integrantes', -1),
+            help="Escribir valor de -1 para indicar que no se tiene información de este campo"
         )
 
     with col2:
         municipio = st.selectbox(
         "Municipio*",
         options=municipios,
-        index=0,  # Selecciona el primer elemento por defecto
+        format_func=lambda x: f"{x['nombre']}-{x['departamento']['nombre']}",
+        index=organizacion_data["municipio"]["id"]-1,  # Selecciona el municipio de la organización por defecto. Se resta uno por cómo funcionan las listas en Python.
         key="municipio_select",
         help="Seleccione el municipio de la lista"
-    )
+        )
         
         num_mujeres = st.number_input(
-            "Número de mujeres*", 
-            min_value=0, 
+            "Número de mujeres", 
+            min_value=-1, 
             max_value=num_integrantes,
-            value=organizacion_data.get('num_mujeres', 0),
-            help=f"Máximo {num_integrantes} (total de integrantes)"
+            value=organizacion_data.get('num_mujeres', -1),
+            help=f"Máximo {num_integrantes} (total de integrantes). Escribir valor de -1 para indicar que no se tiene información de este campo"
         )
         
-        tipo_apoyo = st.text_input(
-            "Tipo de apoyo brindado", 
-            value=organizacion_data.get('tipo_apoyo', '')
+        tipo_apoyo = st.selectbox(
+            "Tipo de apoyo brindado",
+            options=Tipoapoyos,
+            format_func=lambda x: x['nombre'],
+            index=organizacion_data.get('tipoapoyo').get('id')-1 if organizacion_data["tipoapoyo"] != None else 0,
+            key="tipoapoyo_select",
+            help="Selecciona el tipo de apoyo de la lista"
         )
-        
-        otro_apoyo = st.text_input(
-            "Otro apoyo recibido", 
-            value=organizacion_data.get('otro_apoyo', '')
+        tipo_actividad = st.selectbox(
+            "Tipo de actividad",
+            options=Tipoactividades,
+            format_func=lambda x: x['nombre'],
+            index=organizacion_data.get('tipoactividad').get('id')-1 if organizacion_data["tipoactividad"] != None else 0,
+            key="tipoactividad_select",
+            help="Selecciona el tipo de actividad de la lista"
         )
         
         org_mujeres = st.selectbox(
             "¿Es una organización de mujeres?*", 
-            options=["Sí", "No"],
-            index=0 if organizacion_data.get('org_mujeres', 'No') == "Sí" else 1
+            options=["Sí", "No", "No Informa"],
+            index=organizacion_data.get('orgmujeres') if organizacion_data["orgmujeres"] != None else 2,
+            help="Selecciona si es una organización de mujeres o no o si no se tiene conocimiento"
         )
 
     # Validación de campos obligatorios
     campos_obligatorios = {
         'Nombre': nombre,
-        'NIT': nit,
-        'Departamento': departamento,
-        'Municipio': municipio
+        'Municipio': municipio,
+        'Orgmujeres': org_mujeres
     }
     
     campos_faltantes = [campo for campo, valor in campos_obligatorios.items() if not valor]
@@ -133,20 +148,30 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
         if campos_faltantes:
             st.error(f"Por favor complete los campos obligatorios: {', '.join(campos_faltantes)}")
         else:
+            # Convertir a Booleano la organización de mujeres
+            bool_org_mujeres = None
+            if org_mujeres == "Sí":
+                bool_org_mujeres = True
+            elif org_mujeres == "No":
+                bool_org_mujeres = False
+
             # Aquí iría la lógica para guardar los cambios en la base de datos
             datos_actualizados = {
-                'nombre': nombre,
-                'nit': nit,
-                'tipo': tipo,
-                'linea_productiva': linea_productiva,
-                'num_integrantes': num_integrantes,
-                'departamento': departamento,
-                'municipio': municipio,
-                'num_mujeres': num_mujeres,
-                'tipo_apoyo': tipo_apoyo,
-                'otro_apoyo': otro_apoyo,
-                'org_mujeres': org_mujeres
+                "id": organizacion_data["id"],
+                "nombre": nombre,
+                "municipio": municipio,
+                "nit": nit,
+                "integrantes": None if num_integrantes == -1 else num_integrantes,
+                "nummujeres": None if num_mujeres == -1 else num_mujeres,
+                "orgmujeres": bool_org_mujeres,
+                "tipoorg": tipo,
+                "tipoactividad": tipo_actividad,
+                "lineaprod": linea_productiva,
+                "tipoapoyo": tipo_apoyo
             }
+            st.write(datos_actualizados)
+
+            modificar_organizacion(datos_actualizados)
             
             # Lógica para actualizar en BD iría aquí
             st.success("¡Organización actualizada correctamente!")

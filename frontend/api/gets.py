@@ -5,7 +5,7 @@ import streamlit as st
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BASE_URL = "https://localhost:57740/api"
+BASE_URL = "https://localhost:7032/api"
 
 def consultar_actividades():
     """Obtiene todas las actividades con sus participantes"""
@@ -13,6 +13,16 @@ def consultar_actividades():
         response = requests.get(f"{BASE_URL}/Actividades", verify=False)
         response.raise_for_status()
         return procesar_datos_actividades(response.json())
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener actividades: {e}")
+        return []
+    
+def obtener_actividades():
+    """Obtiene todas las actividades con los datos."""
+    try:
+        response = requests.get(f"{BASE_URL}/Actividades", verify=False)
+        response.raise_for_status()
+        return response.json()
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener actividades: {e}")
         return []
@@ -92,7 +102,16 @@ def format_fecha(fecha_str):
         return fecha.strftime("%d/%m/%Y")
     except ValueError:
         return fecha_str  # Si falla el parseo, devolver el original
-    
+
+def obtener_proyectos():
+    """Obtiene los proyectos desde la API"""
+    try:
+        response = requests.get(f"{BASE_URL}/Proyectos", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener proyectos: {e}")
+        return None
 
 def obtener_generos():
     """Obtiene los géneros desde la API (datos crudos)"""
@@ -114,13 +133,13 @@ def obtener_grupos_etnicos():
         st.error(f"Error al obtener grupos étnicos: {e}")
         return None
     
-def obtener_lineas_producto():
+def obtener_lineas_produccion():
     try:
         response = requests.get(f"{BASE_URL}/Lineaprods", verify=False)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        st.error(f"Error al obtener líneas de producto: {e}")
+        st.error(f"Error al obtener líneas de producción: {e}")
         return None
     
 def obtener_municipios():

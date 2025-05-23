@@ -15,13 +15,13 @@ namespace IMCAPI.Core.DTO
         public string? Nit {  get; set; }
         public int? Integrantes { get; set; }
         public int? Nummujeres { get; set; }
-        public float? Orgmujeres { get; set; }
+        public bool? Orgmujeres { get; set; }
         public TipoorgDto? tipoorg { get; set; }
         public TipoactividadDto? tipoactividad { get; set; }
         public LineaprodDto? lineaprod { get; set; }
         public TipoapoyoDto? tipoapoyo { get; set; }
 
-        public OrganizacionDto(int id, string nombre, MunicipioDto municipio, string? nit, int? integrantes, int? nummujeres, float? orgmujeres, TipoorgDto? tipoorg, TipoactividadDto? tipoactividad, LineaprodDto? lineaprod, TipoapoyoDto? tipoapoyo)
+        public OrganizacionDto(int id, string nombre, MunicipioDto municipio, string? nit, int? integrantes, int? nummujeres, bool? orgmujeres, TipoorgDto? tipoorg, TipoactividadDto? tipoactividad, LineaprodDto? lineaprod, TipoapoyoDto? tipoapoyo)
         {
             Id = id;
             Nombre = nombre;

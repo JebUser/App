@@ -4,7 +4,7 @@ from .data import obtener_lista_organizaciones
 from .data import obtener_lista_tipos_organizacion
 from .data import obtener_lista_tipos_apoyo
 from .data import obtener_lista_generos
-from .data import obtener_lista_lineas_producto
+from .data import obtener_lista_lineas_produccion
 from .data import obtener_lista_tipos_identificacion
 from .data import obtener_lista_grupos_etnicos
 from .data import obtener_lista_tipos_beneficiario
@@ -28,6 +28,6 @@ __all__ = [
     'obtener_lista_tipos_beneficiario',
     'obtener_lista_tipos_identificacion',
     'obtener_lista_tipos_organizacion',
+    'obtener_lista_lineas_produccion'
     'obtener_lista_tipos_proyectos',
-    'obtener_lista_tipos_actividad'
 ]

@@ -5,6 +5,8 @@ from utils.utils import init_session_state, navigate_to
 from components.componentes_modificacion.inicio_modificacion import inicio_pagina_mod
 from components.componentes_modificacion.ver_modificar_organizacion import pantalla_modificar_organizacion
 from components.componentes_modificacion.actualizar_organizacion import pantalla_actualizar_organizacion
+from components.componentes_modificacion.ver_modificar_proyecto import pantalla_modificar_proyecto
+from components.componentes_modificacion.actualizar_proyecto import pantalla_actualizar_proyecto
 
 # Inicializar el estado de la sesión
 init_session_state()
@@ -23,7 +25,8 @@ elif st.session_state.subpage == 'modificar_organizacion':
     pantalla_modificar_organizacion()
 elif st.session_state.subpage == 'modificar_evento':
     # Aquí iría tu función para modificar eventos
-    st.write("Pantalla de modificación de eventos")
-    # pantalla_modificar_evento()  # Descomenta cuando tengas esta función
+    pantalla_modificar_proyecto()
 elif st.session_state.subpage == 'actualizar_organizacion':
     pantalla_actualizar_organizacion(st.session_state.organizacion_editar)
+elif st.session_state.subpage == 'actualizar_proyecto':
+    pantalla_actualizar_proyecto(st.session_state.proyecto_editar)

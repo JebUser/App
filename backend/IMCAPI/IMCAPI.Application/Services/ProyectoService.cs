@@ -69,18 +69,9 @@ namespace IMCAPI.Application.Services
                 proyecto.Fechainicio = proyectodto.Fechainicio;
                 proyecto.FechaFinal = proyectodto.Fechafinal;
                 proyecto.Tipoid = proyectodto.tipoproyecto != null ? proyectodto.tipoproyecto.Id : null;
+                var actividadesIds = proyectodto.actividades.Select(a => a.Id).ToList();
 
-                proyecto.actividades.Clear();
-                proyecto.actividades = proyectodto.actividades.Select(a => new Actividad 
-                { 
-                    Id = a.Id,
-                    Nombre = a.Nombre,
-                    FechaInicio = a.FechaInicio,
-                    FechaFinal = a.FechaFinal,
-                    Lugares_id = a.lugar.Id
-                }).ToList();
-
-                await _proyectoRepository.UpdateProyectoAsync(proyecto); // Actualiza el proyecto.
+                await _proyectoRepository.UpdateProyectoAsync(proyecto, actividadesIds); // Actualiza el proyecto.
             }
         }
         public async Task DeleteProyectoAsync(int id)

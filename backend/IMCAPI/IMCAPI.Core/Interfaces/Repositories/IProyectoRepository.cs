@@ -7,7 +7,7 @@ namespace IMCAPI.Core.Interfaces.Repositories
         Task<IEnumerable<Proyecto>> GetProyectosAsync();
         Task<Proyecto?> GetProyectoIdAsync(int id);
         Task AddProyectoAsync(Proyecto proyecto);
-        Task UpdateProyectoAsync(Proyecto proyecto);
+        Task UpdateProyectoAsync(Proyecto proyecto, List<int> actividadesIds);
         Task DeleteProyectoAsync(int id);
     }
 }
