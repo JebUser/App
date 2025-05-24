@@ -18,3 +18,6 @@ def inicio_pagina_mod():
         st.markdown("### Modificar Proyecto")
         if st.button("Modificar proyecto"):
             navigate_to('modificar', 'modificar_evento')
+        st.markdown("### Modificar Beneficiario")
+        if st.button("Modificar beneficiario"):
+            navigate_to('modificar', 'modificar_beneficiario')

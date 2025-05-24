@@ -9,6 +9,8 @@ from components.componentes_modificacion.ver_modificar_proyecto import pantalla_
 from components.componentes_modificacion.actualizar_proyecto import pantalla_actualizar_proyecto
 from components.componentes_modificacion.ver_modificar_actividad import pantalla_modificar_actividad
 from components.componentes_modificacion.actualizar_actividad import pantalla_actualizar_actividad
+from components.componentes_modificacion.ver_modificar_beneficiario import pantalla_modificar_beneficiario
+from components.componentes_modificacion.actualizar_beneficiario import pantalla_actualizar_beneficiario
 
 # Inicializar el estado de la sesión
 init_session_state()
@@ -30,9 +32,13 @@ elif st.session_state.subpage == 'modificar_evento':
     pantalla_modificar_proyecto()
 elif st.session_state.subpage == 'modificar_actividad':
     pantalla_modificar_actividad()
+elif st.session_state.subpage == 'modificar_beneficiario':
+    pantalla_modificar_beneficiario()
 elif st.session_state.subpage == 'actualizar_organizacion':
     pantalla_actualizar_organizacion(st.session_state.organizacion_editar)
 elif st.session_state.subpage == 'actualizar_proyecto':
     pantalla_actualizar_proyecto(st.session_state.proyecto_editar)
 elif st.session_state.subpage == 'actualizar_actividad':
     pantalla_actualizar_actividad(st.session_state.actividad_editar)
+elif st.session_state.subpage == 'actualizar_beneficiario':
+    pantalla_actualizar_beneficiario(st.session_state.beneficiario_editar)
