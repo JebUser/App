@@ -155,25 +155,8 @@ namespace IMCAPI.Application.Services
                 beneficiario.Municipios_id = beneficiariodto.municipio != null ? beneficiariodto.municipio.Id : null;
                 beneficiario.Sectores_id = beneficiariodto.sector != null ? beneficiariodto.sector.Id : null;
 
-                if (beneficiario.Organizaciones.Count() != beneficiariodto.Organizaciones.Count())
-                {
-                    beneficiario.Organizaciones.Clear();
-                    beneficiario.Organizaciones = beneficiariodto.Organizaciones.Select(o => new Organizacion
-                    {
-                        Id = o.Id,
-                        Nombre = o.Nombre,
-                        Municipios_id = o.municipio.Id,
-                        Nit = o.Nit,
-                        Integrantes = o.Integrantes,
-                        Nummujeres = o.Nummujeres,
-                        Orgmujeres = o.Orgmujeres,
-                        Tipoorg_id = o.tipoorg != null ? o.tipoorg.Id : null,
-                        Tipoactividad_id = o.tipoactividad != null ? o.tipoactividad.Id : null,
-                        Lineaprod_id = o.lineaprod != null ? o.lineaprod.Id : null,
-                        Tipoapoyo_id = o.tipoapoyo != null ? o.tipoapoyo.Id : null
-                    }).ToList();
-                }
-                await _beneficiarioRepository.UpdateBeneficiarioAsync(beneficiario);
+                var organizacionesIds = beneficiariodto.Organizaciones.Select(o => o.Id).ToList();
+                await _beneficiarioRepository.UpdateBeneficiarioAsync(beneficiario, organizacionesIds);
             }
         }
 
