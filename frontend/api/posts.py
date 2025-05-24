@@ -255,6 +255,40 @@ def crear_linea_productiva(nombre: str):
     
     return resultado
 
+def crear_tipo_actividad(nombre: str):
+    """Crea un nuevo tipo de actividad"""
+    data = {"nombre": nombre.strip()}
+    resultado = post_to_api("Tipoactividades", data)
+    
+    # Si el resultado tiene ID 0 o estructura inesperada, intentar obtener el tipo recién creado
+    if (resultado is None or 
+        resultado.get("id") == 0 or 
+        not isinstance(resultado, dict) or 
+        "id" not in resultado):
+        
+        st.warning("⚠️ Respuesta inesperada de la API, intentando obtener el tipo de actividad recién creado...")
+        
+        try:
+            # Esperar un momento para asegurar que la creación se complete
+            time.sleep(1)
+            
+            # Obtener todos los tipos y buscar el recién creado
+            tipos = obtener_tipos_actividades()
+            if tipos:
+                tipo_encontrado = next(
+                    (t for t in tipos if t.get("nombre") == nombre.strip()), 
+                    None
+                )
+                if tipo_encontrado:
+                    st.success(f"✅ Tipo de actividad encontrado con ID: {tipo_encontrado['id']}")
+                    return tipo_encontrado
+        
+        except Exception as e:
+            st.error(f"Error al obtener tipos de actividad: {e}")
+            return None
+    
+    return resultado
+
 def obtener_tipos_organizaciones():
     """Obtiene la lista actual de tipos de organización"""
     return get_from_api("Tipoorgs")
@@ -270,11 +304,6 @@ def obtener_lineas_productivas():
 def crear_organizacion_completa(organizacion_data: dict):
     """Crea una organización con la estructura completa"""
     return post_to_api("Organizaciones", organizacion_data)
-
-def crear_tipo_actividad(nombre: str):
-    """Crea un nuevo tipo de actividad"""
-    data = {"nombre": nombre.strip()}
-    return post_to_api("Tipoactividades", data)
 
 def obtener_tipos_actividades():
     """Obtiene la lista actual de tipos de actividad"""

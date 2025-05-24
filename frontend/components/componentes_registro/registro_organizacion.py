@@ -3,7 +3,6 @@ from utils.utils import navigate_to
 from assets.data import obtener_lista_municipios
 from assets.data import obtener_lista_tipos_organizacion
 from assets.data import obtener_lista_tipos_apoyo
-from assets.data import obtener_lista_lineas_producto
 from api.posts import (
     crear_organizacion_completa, 
     crear_tipo_organizacion, 
@@ -119,7 +118,7 @@ def pantalla_registro_organizacion():
         municipio_seleccionado = st.selectbox(
             "Municipio*",
             options=municipios_con_id,
-            format_func=lambda x: x[1],  # Mostrar solo el nombre-description
+            format_func=lambda x: x[2],  # Mostrar solo el nombre-description
             index=0,
             key="municipio_select"
         )
@@ -155,28 +154,33 @@ def pantalla_registro_organizacion():
                 st.warning("No hay tipos de apoyo disponibles. Crea uno nuevo.")
 
         # Otros campos opcionales
-        otro_apoyo = st.text_input("Otro apoyo")
         es_org_mujeres = st.selectbox("¿Es una organización de mujeres?", ["No", "Sí"])
 
         # Campo para tipo de actividad
         crear_nuevo_tipo_actividad = st.checkbox("Crear nuevo tipo de actividad")
-        
+
         if crear_nuevo_tipo_actividad:
             nuevo_tipo_actividad_nombre = st.text_input("Nombre del nuevo tipo de actividad*")
             tipo_actividad_seleccionado = None
         else:
             nuevo_tipo_actividad_nombre = None
             if tipos_actividad_api:
-                seleccion_actividad = st.selectbox(
-                    "Tipo de actividad",
-                    options=range(len(tipos_actividad_api)),
-                    format_func=lambda x: tipos_actividad_api[x]["nombre"],
-                    help="Seleccione el tipo de actividad"
+                # CORRECCIÓN: Agregar opción "Sin seleccionar" y manejar índice None
+                opciones_actividad = ["Sin seleccionar"] + [t["nombre"] for t in tipos_actividad_api]
+                seleccion_actividad_idx = st.selectbox(
+                    "Tipo de actividad (opcional)",
+                    options=range(len(opciones_actividad)),
+                    format_func=lambda x: opciones_actividad[x],
+                    help="Opcional: Seleccione un tipo de actividad"
                 )
-                tipo_actividad_seleccionado = tipos_actividad_api[seleccion_actividad]
+                
+                if seleccion_actividad_idx == 0:  # "Sin seleccionar"
+                    tipo_actividad_seleccionado = None
+                else:
+                    tipo_actividad_seleccionado = tipos_actividad_api[seleccion_actividad_idx - 1]
             else:
                 tipo_actividad_seleccionado = None
-                st.info("No hay tipos de actividad disponibles. Puede crear uno nuevo.")
+                st.info("No hay tipos de actividad disponibles. Puede crear uno nuevo si lo desea.")
 
     # Botón de registro
     if st.button("Registrar", type="primary"):
@@ -353,28 +357,41 @@ def pantalla_registro_organizacion():
                 tipo_actividad_creado = crear_tipo_actividad(nuevo_tipo_actividad_nombre.strip())
                 
                 if tipo_actividad_creado:
-                    if isinstance(tipo_actividad_creado, dict) and "id" in tipo_actividad_creado:
+                    if debug_mode:
+                        st.write("✅ **Respuesta del tipo de actividad creado:**")
+                        st.json(tipo_actividad_creado)
+                    
+                    if isinstance(tipo_actividad_creado, dict) and "id" in tipo_actividad_creado and "nombre" in tipo_actividad_creado:
                         tipo_actividad = {
                             "id": tipo_actividad_creado["id"],
-                            "nombre": tipo_actividad_creado.get("nombre", nuevo_tipo_actividad_nombre.strip())
+                            "nombre": tipo_actividad_creado["nombre"]
                         }
-                        st.success(f"✅ Tipo de actividad creado con ID: {tipo_actividad['id']}")
+                        st.success(f"✅ Tipo de actividad '{nuevo_tipo_actividad_nombre}' creado con ID: {tipo_actividad_creado['id']}")
                     else:
                         st.error("❌ El tipo de actividad se creó pero la respuesta no tiene la estructura esperada")
+                        if debug_mode:
+                            st.write("Estructura recibida:", tipo_actividad_creado)
                         return
                 else:
                     st.error("❌ Error al crear el nuevo tipo de actividad")
                     return
             elif tipo_actividad_seleccionado:
+                # Usar tipo existente
                 tipo_actividad = {
                     "id": tipo_actividad_seleccionado["id"],
                     "nombre": tipo_actividad_seleccionado["nombre"]
                 }
+                if debug_mode:
+                    st.write("✅ **Usando tipo de actividad existente:**")
+                    st.json(tipo_actividad)
             else:
+                # Sin tipo de actividad (campo opcional)
                 tipo_actividad = {
                     "id": 0,
                     "nombre": ""
                 }
+                if debug_mode:
+                    st.write("ℹ️ **Sin tipo de actividad seleccionado**")
 
             time.sleep(0.5)
             # PASO 4: Crear organización completa
@@ -396,11 +413,11 @@ def pantalla_registro_organizacion():
                 "nit": nit.strip() if nit else "",
                 "integrantes": int(num_integrantes),
                 "nummujeres": int(num_mujeres),
-                "orgmujeres": 1 if es_org_mujeres == "Sí" else 0,
+                "orgmujeres": True if es_org_mujeres == "Sí" else False,
                 "tipoorg": tipo_organizacion,
                 "tipoactividad": {
-                    "id": 0,
-                    "nombre": tipo_actividad
+                    "id": tipo_actividad["id"] if tipo_actividad else 0,
+                    "nombre": tipo_actividad["nombre"] if tipo_actividad else ""
                 },
                 "lineaprod": linea_productiva,
                 "tipoapoyo": tipo_apoyo
