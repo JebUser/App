@@ -244,3 +244,13 @@ def obtener_lugares():
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener lugares: {e}")
         return []
+    
+def obtener_rango_edades():
+    """Obtiene todos los rangos de edades con los datos."""
+    try:
+        response = requests.get(f"{BASE_URL}/Edades", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener los rangos de edades: {e}")
+        return []
