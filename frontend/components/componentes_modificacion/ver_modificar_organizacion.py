@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 from streamlit_modal import Modal
-from assets.data.organizaciones import organizaciones_ejemplo
 from utils.utils import navigate_to
-from datetime import datetime
-from api.puts import modificar_organizacion
 from api.gets import obtener_organizaciones
 
 def pantalla_modificar_organizacion():
