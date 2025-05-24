@@ -26,6 +26,16 @@ def obtener_actividades():
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener actividades: {e}")
         return []
+    
+def obtener_beneficiarios():
+    """Obtiene todos los beneficiarios con los datos."""
+    try:
+        response = requests.get(f"{BASE_URL}/Beneficiarios", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener beneficiarios: {e}")
+        return []
 
 def procesar_datos_actividades(datos_api):
     """Procesa los datos crudos de la API a un formato estructurado"""
@@ -223,4 +233,14 @@ def obtener_tipos_actividad():
         return response.json() or []  # Devuelve array vacío si es None
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener tipos de actividades: {e}")
+        return []
+    
+def obtener_lugares():
+    """Obtiene todos los lugares de actividades con los datos."""
+    try:
+        response = requests.get(f"{BASE_URL}/Lugares", verify=False)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error al obtener lugares: {e}")
         return []
