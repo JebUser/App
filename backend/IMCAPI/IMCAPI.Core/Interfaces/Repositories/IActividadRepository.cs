@@ -12,7 +12,7 @@ namespace IMCAPI.Core.Interfaces.Repositories
         Task<IEnumerable<Actividad>> GetActividadesAsync();
         Task<Actividad?> GetActividadByIdAsync(int id);
         Task AddActividadAsync(Actividad actividad);
-        Task UpdateActividadAsync(Actividad actividad);
+        Task UpdateActividadAsync(Actividad actividad, List<int> beneficiariosIds);
         Task DeleteActividadAsync(int id);
     }
 }

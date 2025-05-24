@@ -68,8 +68,16 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateActividadAsync(Actividad actividad)
+        public async Task UpdateActividadAsync(Actividad actividad, List<int> beneficiariosIds)
         {
+            var beneficiarios = await _context.Beneficiarios
+                .Where(b => beneficiariosIds.Contains(b.Id))
+                .ToListAsync();
+            actividad.beneficiarios.Clear();
+            foreach (var beneficiario in beneficiarios)
+            {
+                actividad.beneficiarios.Add(beneficiario);
+            }
             _context.Actividades.Update(actividad);
             await _context.SaveChangesAsync();
         }

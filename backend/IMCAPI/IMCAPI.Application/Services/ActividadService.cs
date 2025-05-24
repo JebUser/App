@@ -157,41 +157,9 @@ namespace IMCAPI.Application.Services
                 actividad.FechaInicio = actividaddto.FechaInicio;
                 actividad.FechaFinal = actividaddto.FechaFinal;
                 actividad.Lugares_id = lugar.Id;
-                actividad.beneficiarios.Clear();
-                actividad.beneficiarios = actividaddto.beneficiarios.Select(a => new Beneficiario
-                {
-                    Id = a.Id,
-                    Identificacion = a.Identificacion,
-                    Nombre1 = a.Nombre1,
-                    Nombre2 = a.Nombre2,
-                    Apellido1 = a.Apellido1,
-                    Apellido2 = a.Apellido2,
-                    Celular = a.Celular,
-                    Tipoiden_id = a.tipoiden != null ? a.tipoiden.Id : null,
-                    Generos_id = a.genero.Id,
-                    Edades_id = a.Rangoedad != null ? a.Rangoedad.Id : null,
-                    Firma = a.Firma,
-                    Grupoetnico_id = a.grupoetnico != null ? a.grupoetnico.Id : null,
-                    Tipobene_id = a.tipobene != null ? a.tipobene.Id : null,
-                    Municipios_id = a.municipio != null ? a.municipio.Id : null,
-                    Sectores_id = a.sector != null ? a.sector.Id : null,
-                    Organizaciones = a.Organizaciones.Select(o => new Organizacion
-                    {
-                        Id = o.Id,
-                        Nombre = o.Nombre,
-                        Municipios_id = o.municipio.Id,
-                        Nit = o.Nit,
-                        Integrantes = o.Integrantes,
-                        Nummujeres = o.Nummujeres,
-                        Orgmujeres = o.Orgmujeres,
-                        Tipoorg_id = o.tipoorg != null ? o.tipoorg.Id : null,
-                        Tipoactividad_id = o.tipoactividad != null ? o.tipoactividad.Id : null,
-                        Lineaprod_id = o.lineaprod != null ? o.lineaprod.Id : null,
-                        Tipoapoyo_id = o.tipoapoyo != null ? o.tipoapoyo.Id : null
-                    }).ToList()
-                }).ToList();
+                var beneficiariosIds = actividaddto.beneficiarios.Select(b => b.Id).ToList();
 
-                await _actividadRepository.UpdateActividadAsync(actividad);
+                await _actividadRepository.UpdateActividadAsync(actividad, beneficiariosIds);
             }
         }
 
