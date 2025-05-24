@@ -105,7 +105,6 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
             key='tipo_identificacion_select',
             help="Seleccione el tipo de identificación al que se encuentra asociado el número de identificación"
         )
-        # TODO: Usar POST para agregar nuevas opciones.
         identificacion = st.text_input(
             "Número de Identificación",
             value=beneficiario_data.get('identificacion','')
@@ -139,7 +138,6 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
             key='genero_select',
             help="Seleccione el género del beneficiario"
         )
-        # TODO: Usar POST para agregar nuevas opciones.
         rango_edad = st.selectbox(
             "Rango de Edad",
             options=Rangoedades,
@@ -148,7 +146,6 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
             key='rango_edad_select',
             help="Seleccione el rango de edad del beneficiario"
         )
-        # TODO: Usar POST para agregar nuevas opciones.
         grupo_etnico = st.selectbox(
             "Grupo étnico al que pertenece (si aplica)",
             options=Gruposetnicos,
@@ -157,7 +154,6 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
             key='grupo_etnico_select',
             help="Seleccione el grupo étnico al que pertenece el beneficiario"
         )
-        # TODO: Usar POST para agregar nuevas opciones.
         tipo_beneficiario = st.selectbox(
             "El beneficiario es",
             options=Tiposbene,
@@ -166,7 +162,6 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
             key='tipo_beneficiario_select',
             help="Seleccione el tipo de beneficiario"
         )
-        # TODO: Usar POST para agregar nuevas opciones.
         municipio = st.selectbox(
             "Municipio",
             options=Municipios,
@@ -183,7 +178,6 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
             key='sector_select',
             help="Seleccione el sector al que pertenece el beneficiario"
         )
-        # TODO: Usar POST para agregar nuevas opciones.
         organizaciones = st.multiselect(
             "Organizaciones*",
             options=Organizaciones,

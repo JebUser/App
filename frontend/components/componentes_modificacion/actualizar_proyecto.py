@@ -78,7 +78,6 @@ def pantalla_actualizar_proyecto(proyecto_data=None):
             key = "tipoproyecto_select",
             help = "Selecciona el tipo de proyecto de la lista"
         )
-        # TODO: Aplicar POST para permitir crear nuevos Tipos de Proyecto.
         actividades = st.multiselect(
             "Actividades*",
             options=Actividades,

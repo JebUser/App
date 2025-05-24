@@ -190,7 +190,6 @@ def pantalla_actualizar_actividad(actividad_data=None):
             key="lugar_select",
             help="Selecciona el lugar en el que se realizó la actividad"
         )
-        # TODO: Aplicar POST para permitir crear nuevos Lugares.
         beneficiarios = st.multiselect(
             "Beneficiarios*",
             options=Beneficiarios,

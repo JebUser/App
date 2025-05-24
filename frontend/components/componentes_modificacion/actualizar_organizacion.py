@@ -73,7 +73,6 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
             key="tipoorg_select",
             help="Selecciona el tipo de organización de la lista"
         )
-        # TODO: Aplicar POST para permitir crear nuevos Tipos de Organización.
         
         linea_productiva = st.selectbox(
             "Línea productiva",
@@ -83,7 +82,6 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
             key="lineaprod_select",
             help="Selecciona la línea de producción de la lista"
         )
-        # TODO: Aplicar POST para permitir crear nuevas Líneas de Producción.
         
         num_integrantes = st.number_input(
             "Número de integrantes", 
