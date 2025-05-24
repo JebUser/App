@@ -237,8 +237,8 @@ def pantalla_actualizar_actividad(actividad_data=None):
             st.balloons()
             
             # Opcional: Volver al listado después de guardar
-            # navigate_to('modificar', 'modificar_proyecto')
-            # st.rerun()
+            navigate_to('modificar', 'modificar_actividad')
+            st.rerun()
 
     # Mostrar datos originales (para referencia)
     with st.expander("🔍 Ver datos originales"):
