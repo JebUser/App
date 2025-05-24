@@ -1,4 +1,4 @@
-from api.gets import obtener_generos, obtener_grupos_etnicos, obtener_lineas_produccion, obtener_municipios, obtener_organizaciones, obtener_sectores,  obtener_tipos_beneficiario, obtener_tipos_identificacion, obtener_tipos_organizacion       # Importación actualizada
+from api.gets import obtener_generos, obtener_grupos_etnicos, obtener_lineas_produccion, obtener_municipios, obtener_organizaciones, obtener_sectores,  obtener_tipos_beneficiario, obtener_tipos_identificacion, obtener_tipos_organizacion, obtener_tipos_proyectos, obtener_tipos_apoyo, obtener_tipos_actividad       # Importación actualizada
 import streamlit as st
 
 def obtener_lista_generos():
