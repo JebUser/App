@@ -92,7 +92,7 @@ def pantalla_modificar_proyecto():
         with modal_eliminar.container():
             org_name = st.session_state.get('organizacion_a_eliminar', '')
             st.markdown(f"### ¿Confirmar eliminación?")
-            st.markdown(f"**Organización:** {org_name}")
+            st.markdown(f"**Proyecto:** {org_name}")
             st.markdown("**Consecuencias:**")
             st.markdown("- Se marcará como eliminada en el sistema")
             st.markdown("- Las referencias se cambiarán por 'borrado'")

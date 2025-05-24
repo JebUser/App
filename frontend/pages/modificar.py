@@ -7,6 +7,8 @@ from components.componentes_modificacion.ver_modificar_organizacion import panta
 from components.componentes_modificacion.actualizar_organizacion import pantalla_actualizar_organizacion
 from components.componentes_modificacion.ver_modificar_proyecto import pantalla_modificar_proyecto
 from components.componentes_modificacion.actualizar_proyecto import pantalla_actualizar_proyecto
+from components.componentes_modificacion.ver_modificar_actividad import pantalla_modificar_actividad
+from components.componentes_modificacion.actualizar_actividad import pantalla_actualizar_actividad
 
 # Inicializar el estado de la sesión
 init_session_state()
@@ -26,7 +28,11 @@ elif st.session_state.subpage == 'modificar_organizacion':
 elif st.session_state.subpage == 'modificar_evento':
     # Aquí iría tu función para modificar eventos
     pantalla_modificar_proyecto()
+elif st.session_state.subpage == 'modificar_actividad':
+    pantalla_modificar_actividad()
 elif st.session_state.subpage == 'actualizar_organizacion':
     pantalla_actualizar_organizacion(st.session_state.organizacion_editar)
 elif st.session_state.subpage == 'actualizar_proyecto':
     pantalla_actualizar_proyecto(st.session_state.proyecto_editar)
+elif st.session_state.subpage == 'actualizar_actividad':
+    pantalla_actualizar_actividad(st.session_state.actividad_editar)

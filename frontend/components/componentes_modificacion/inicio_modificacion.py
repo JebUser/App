@@ -10,7 +10,11 @@ def inicio_pagina_mod():
         if st.button("Modificar organización"):
             navigate_to('modificar', 'modificar_organizacion')
 
+        st.markdown("### Modificar Actividad")
+        if st.button("Modificar actividad"):
+            navigate_to('modificar', 'modificar_actividad')
+
     with col2:
-        st.markdown("### Modificar proyecto")
+        st.markdown("### Modificar Proyecto")
         if st.button("Modificar proyecto"):
             navigate_to('modificar', 'modificar_evento')
