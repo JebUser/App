@@ -1,97 +1,70 @@
 import streamlit as st
 from utils.utils import navigate_to
-from assets.data import obtener_lista_generos
-from assets.data import obtener_lista_tipos_identificacion
-from assets.data import obtener_lista_municipios
-#from assets.data import obtener_lista_grupos_etnicos
-from assets.data import obtener_lista_tipos_beneficiario
-from assets.data import obtener_lista_sectores
-from assets.data import obtener_lista_organizaciones
+from assets.data import (
+    obtener_lista_generos,
+    obtener_lista_tipos_identificacion,
+    obtener_lista_municipios,
+    obtener_lista_tipos_beneficiario,
+    obtener_lista_sectores,
+    obtener_lista_organizaciones
+)
+from api.posts import crear_beneficiario
 
 def pantalla_registro_participante():
-
-    generos = obtener_lista_generos()
-    Tipoidens = obtener_lista_tipos_identificacion(formato='select')
-    municipios = obtener_lista_municipios(formato='select')
-    #Grupoetnicos = obtener_lista_grupos_etnicos(formato='select')
-    Tipobenes = obtener_lista_tipos_beneficiario(formato='select')
-    Sectores = obtener_lista_sectores(formato='select')
-    Organizaciones = obtener_lista_organizaciones(formato='select')
-
-    st.markdown("## Registro participante")
+    st.markdown("## Registro de Participante")
+    
     if st.button("⬅️ Atrás"):
-        navigate_to("registro_evento")
+        navigate_to('registrar', 'registro_evento')
         st.rerun()
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.text_input("Nombre y apellido")
+    with st.form("form_participante"):
+        # Campos del formulario
+        nombre = st.text_input("Nombre completo*")
+        genero = st.selectbox("Género*", options=[g['nombre'] for g in obtener_lista_generos()])
+        tipo_id = st.selectbox("Tipo documento*", options=obtener_lista_tipos_identificacion(formato='select'))
+        num_doc = st.text_input("Número de documento*")
+        municipio = st.selectbox("Municipio*", options=obtener_lista_municipios(formato='select'))
+        tipo_beneficiario = st.selectbox("Tipo beneficiario*", options=obtener_lista_tipos_beneficiario(formato='select'))
+        organizacion = st.selectbox("Organización", options=obtener_lista_organizaciones(formato='select'))
+        sector = st.selectbox("Sector", options=obtener_lista_sectores(formato='select'))
+        celular = st.text_input("Celular")
 
-        #st.selectbox("Sexo", ["Masculino", "Femenino", "Otro"]) #este
+        if st.form_submit_button("💾 Guardar Participante"):
+            if validar_participante(locals()):
+                guardar_participante(locals())
 
-        Genero = st.selectbox(
-        "Generos*",
-        options=generos,
-        index=0,  # Selecciona el primer elemento por defecto
-        key="Genero_select",
-        help="Seleccione el Generos de la lista"
-        
-    )
+def validar_participante(data):
+    campos_obligatorios = {
+        'nombre': data['nombre'],
+        'genero': data['genero'],
+        'tipo_id': data['tipo_id'],
+        'num_doc': data['num_doc'],
+        'municipio': data['municipio'],
+        'tipo_beneficiario': data['tipo_beneficiario']
+    }
+    
+    errores = [f"{k.replace('_', ' ').title()} es obligatorio" 
+              for k, v in campos_obligatorios.items() if not v]
+    
+    for error in errores:
+        st.error(error)
+    return len(errores) == 0
 
-        Tipoiden = st.selectbox(
-        "Tipoidens*",
-        options=Tipoidens,
-        index=0,  # Selecciona el primer elemento por defecto
-        key="Tipoidens_select",
-        help="Seleccione el Tipoidens de la lista"
-    )
-        st.text_input("Número de documento")
-        st.number_input("Edad", min_value=0, max_value=120)
-
-    with col2:
-
-        municipio = st.selectbox(
-        "Municipio*",
-        options=municipios,
-        index=0,  # Selecciona el primer elemento por defecto
-        key="municipio_select",
-        help="Seleccione el municipio de la lista"
-    )
-
-        st.selectbox("¿Pertenece a un grupo étnico?", ["Sí", "No"]) # este
-
-#        Grupoetnico = st.selectbox(
-#        "Grupoetnico*",
-#        options=Grupoetnicos,
-#        index=0,  # Selecciona el primer elemento por defecto
-#        key="Grupoetnico_select",
-#        help="Seleccione el Grupoetnico de la lista"
-#    )
-
-        Tipobene = st.selectbox(
-        "Tipobene*",
-        options=Tipobenes,
-        index=0,  # Selecciona el primer elemento por defecto
-        key="Tipobene_select",
-        help="Seleccione el Tipobene de la lista"
-    )        
-        
-        Organizacion = st.selectbox(
-        "Organizacion*",
-        options=Organizaciones,
-        index=0,  # Selecciona el primer elemento por defecto
-        key="Organizacion_select",
-        help="Seleccione el Organizacion de la lista"
-    )
-
-        Sector = st.selectbox(
-        "Sector*",
-        options=Sectores,
-        index=0,  # Selecciona el primer elemento por defecto
-        key="Sectores_select",
-        help="Seleccione el Sector de la lista"
-    )  
-        
-        st.text_input("Celular")
-
-    st.button("Registrar participante")
+def guardar_participante(data):
+    beneficiario_data = {
+        "identificacion": data['num_doc'],
+        "nombre1": data['nombre'].split()[0],
+        "apellido1": " ".join(data['nombre'].split()[1:]) if len(data['nombre'].split()) > 1 else "",
+        "celular": data['celular'],
+        "tipoiden": {"nombre": data['tipo_id']},
+        "genero": {"nombre": data['genero']},
+        "municipio": {"nombre": data['municipio'].split(' - ')[0]},
+        "tipobene": {"nombre": data['tipo_beneficiario']},
+        "sector": {"nombre": data['sector']} if data['sector'] else None,
+        "organizaciones": [{"nombre": data['organizacion']}] if data['organizacion'] else []
+    }
+    
+    if crear_beneficiario(beneficiario_data):
+        st.session_state.actividad_temp['participantes'].append(beneficiario_data)
+        st.success("Participante registrado!")
+        navigate_to('registrar', 'registro_evento')

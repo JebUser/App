@@ -308,3 +308,9 @@ def crear_organizacion_completa(organizacion_data: dict):
 def obtener_tipos_actividades():
     """Obtiene la lista actual de tipos de actividad"""
     return get_from_api("Tipoactividades")
+
+def crear_actividad_completa(actividad_data: dict):
+    return post_to_api("Actividades", actividad_data)
+
+def crear_beneficiario(beneficiario_data: dict):
+    return post_to_api("Beneficiarios", beneficiario_data)
