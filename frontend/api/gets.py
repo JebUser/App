@@ -5,7 +5,7 @@ import streamlit as st
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BASE_URL = "https://localhost:7032/api"
+BASE_URL = "https://localhost:57740/api"
 
 def consultar_actividades():
     """Obtiene todas las actividades con sus participantes"""
@@ -253,4 +253,18 @@ def obtener_rango_edades():
         return response.json()
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener los rangos de edades: {e}")
+        return []
+    
+def obtener_lugares():
+    """Obtiene la lista de lugares desde la API"""
+    url = f"{BASE_URL}/Lugares"
+    try:
+        response = requests.get(url, verify=False, timeout=10)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error al obtener lugares: {response.status_code}")
+            return []
+    except Exception as e:
+        st.error(f"Error de conexión al obtener lugares: {e}")
         return []

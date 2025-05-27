@@ -289,6 +289,40 @@ def crear_tipo_actividad(nombre: str):
     
     return resultado
 
+def crear_lugar(nombre: str):
+    """Crea un nuevo lugar"""
+    data = {"nombre": nombre.strip()}
+    resultado = post_to_api("Lugares", data)
+    
+    # Si el resultado tiene ID 0 o estructura inesperada, intentar obtener el lugar recién creado
+    if (resultado is None or 
+        resultado.get("id") == 0 or 
+        not isinstance(resultado, dict) or 
+        "id" not in resultado):
+        
+        st.warning("⚠️ Respuesta inesperada de la API, intentando obtener el lugar recién creado...")
+        
+        try:
+            # Esperar un momento para asegurar que la creación se complete
+            time.sleep(1)
+            
+            # Obtener todos los lugares y buscar el recién creado
+            lugares = obtener_lugares()
+            if lugares:
+                lugar_encontrado = next(
+                    (l for l in lugares if l.get("nombre") == nombre.strip()), 
+                    None
+                )
+                if lugar_encontrado:
+                    st.success(f"✅ Lugar encontrado con ID: {lugar_encontrado['id']}")
+                    return lugar_encontrado
+        
+        except Exception as e:
+            st.error(f"Error al obtener lugares: {e}")
+            return None
+    
+    return resultado
+
 def obtener_tipos_organizaciones():
     """Obtiene la lista actual de tipos de organización"""
     return get_from_api("Tipoorgs")
@@ -314,3 +348,7 @@ def crear_actividad_completa(actividad_data: dict):
 
 def crear_beneficiario(beneficiario_data: dict):
     return post_to_api("Beneficiarios", beneficiario_data)
+
+def obtener_lugares():
+    """Obtiene la lista actual de lugares"""
+    return get_from_api("Lugares")

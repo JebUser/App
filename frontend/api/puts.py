@@ -4,7 +4,7 @@ import streamlit as st
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BASE_URL = "https://localhost:7032/api"
+BASE_URL = "https://localhost:57740/api"
 
 def modificar_actividad(actividad:dict):
     """Modifica una actividad"""
