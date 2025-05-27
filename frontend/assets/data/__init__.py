@@ -12,6 +12,8 @@ from .data import obtener_lista_sectores
 from .data import obtener_lista_organizaciones
 from .data import obtener_lista_tipos_proyectos
 from .data import obtener_lista_tipos_actividad
+from .data import obtener_lista_lugares
+from .data import obtener_lista_rango_edades
 
 # ... (todas tus funciones existentes)
 
@@ -30,4 +32,6 @@ __all__ = [
     'obtener_lista_tipos_organizacion',
     'obtener_lista_lineas_produccion'
     'obtener_lista_tipos_proyectos',
+    'obtener_lista_lugares',
+    'obtener_lista_rango_edades'
 ]

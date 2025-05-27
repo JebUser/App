@@ -1,4 +1,18 @@
-from api.gets import obtener_generos, obtener_grupos_etnicos, obtener_lineas_produccion, obtener_municipios, obtener_organizaciones, obtener_sectores,  obtener_tipos_beneficiario, obtener_tipos_identificacion, obtener_tipos_organizacion, obtener_tipos_proyectos, obtener_tipos_apoyo, obtener_tipos_actividad       # Importación actualizada
+from api.gets import (
+    obtener_generos, 
+    obtener_grupos_etnicos, 
+    obtener_lineas_produccion, 
+    obtener_municipios, 
+    obtener_organizaciones, 
+    obtener_sectores,  
+    obtener_tipos_beneficiario, 
+    obtener_tipos_identificacion, 
+    obtener_tipos_organizacion, 
+    obtener_tipos_proyectos, 
+    obtener_tipos_apoyo, 
+    obtener_tipos_actividad,
+    obtener_lugares,
+    obtener_rango_edades)
 import streamlit as st
 
 def obtener_lista_generos():
@@ -221,3 +235,37 @@ def obtener_lista_tipos_actividad():
         "id": g.get("id", 0),
         "nombre": g.get("nombre", "Sin nombre")
     } for g in datos_api]
+
+def obtener_lista_rango_edades():
+    """Obtiene y formatea los rangos de edad para uso en la aplicación"""
+    datos_api = obtener_rango_edades()
+    if datos_api is None:
+        return []
+    
+    return [{
+        "id": g.get("id", 0),
+        "rango": g.get("rango", "Sin rango")
+    } for g in datos_api]
+
+def obtener_lista_lugares(formato='completo'):
+    """
+    Obtiene y formatea los lugares para la aplicación
+    Formatos disponibles:
+    - 'completo': Retorna todos los datos estructurados
+    - 'select': Retorna lista para dropdowns [nombre]
+    - 'minimo': Retorna solo id y nombre
+    """
+    
+    datos_api = obtener_lugares()
+    if datos_api is None:
+        return []
+
+    if formato == 'select':
+        return [lugar['nombre'] for lugar in datos_api]
+    elif formato == 'minimo':
+        return [{"id": lugar["id"], "nombre": lugar["nombre"]} for lugar in datos_api]
+    else:  # formato completo por defecto
+        return [{
+            "id": lugar.get("id", 0),
+            "nombre": lugar.get("nombre", "Sin nombre")
+        } for lugar in datos_api]
