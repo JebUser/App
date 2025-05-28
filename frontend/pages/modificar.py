@@ -27,8 +27,7 @@ if st.session_state.subpage is None:
     inicio_pagina_mod()
 elif st.session_state.subpage == 'modificar_organizacion':
     pantalla_modificar_organizacion()
-elif st.session_state.subpage == 'modificar_evento':
-    # Aquí iría tu función para modificar eventos
+elif st.session_state.subpage == 'modificar_proyecto':
     pantalla_modificar_proyecto()
 elif st.session_state.subpage == 'modificar_actividad':
     pantalla_modificar_actividad()
