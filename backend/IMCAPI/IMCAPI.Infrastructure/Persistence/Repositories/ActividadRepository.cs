@@ -64,6 +64,7 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
 
         public async Task AddActividadAsync(Actividad actividad)
         {
+            _context.AttachRange(actividad.beneficiarios);
             _context.Actividades.Add(actividad);
             await _context.SaveChangesAsync();
         }
