@@ -19,7 +19,7 @@ eventos = obtener_actividades_recientes()
 
 if eventos:
     # Mostrar cada evento en una tarjeta visualmente atractiva
-    for evento in eventos:
+    for evento in eventos[::-1]:
         with st.container(border=True):
             col1, col2 = st.columns([3, 1])
             
