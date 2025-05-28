@@ -19,7 +19,7 @@ def eliminar_actividad(actividad_id:int):
 def eliminar_beneficiario(beneficiario_id:int):
     """Modifica un beneficiario"""
     try:
-        response = requests.put(f"{BASE_URL}/Beneficiarios/{beneficiario_id}", verify=False)
+        response = requests.delete(f"{BASE_URL}/Beneficiarios/{beneficiario_id}", verify=False)
         response.raise_for_status()
         return response.status_code
     except requests.exceptions.RequestException as e:
@@ -29,7 +29,7 @@ def eliminar_beneficiario(beneficiario_id:int):
 def eliminar_organizacion(organizacion_id:int):
     """Modifica una organización"""
     try:
-        response = requests.put(f"{BASE_URL}/Organizaciones/{organizacion_id}", verify=False)
+        response = requests.delete(f"{BASE_URL}/Organizaciones/{organizacion_id}", verify=False)
         response.raise_for_status()
         return response.status_code
     except requests.exceptions.RequestException as e:
@@ -39,7 +39,7 @@ def eliminar_organizacion(organizacion_id:int):
 def eliminar_proyecto(proyecto_id:int):
     """Modifica un proyecto"""
     try:
-        response = requests.put(f"{BASE_URL}/Proyectos/{proyecto_id}", verify=False)
+        response = requests.delete(f"{BASE_URL}/Proyectos/{proyecto_id}", verify=False)
         response.raise_for_status()
         return response.status_code
     except requests.exceptions.RequestException as e:
