@@ -53,14 +53,3 @@ def mostrar_participantes(actividad):
                            key=f"btn_{idx}",  # Clave única basada en el índice
                            use_container_width=True):
                     mostrar_info_participante(participante)
-    
-    # Botones de exportación
-    st.divider()
-    st.markdown("**Exportar lista completa:**")
-    col_exp1, col_exp2 = st.columns(2)
-    with col_exp1:
-        if st.button("📊 Exportar a Excel", use_container_width=True, key="export_excel"):
-            st.toast("Generando archivo Excel...")
-    with col_exp2:
-        if st.button("📄 Exportar a PDF", use_container_width=True, key="export_pdf"):
-            st.toast("Generando documento PDF...")
