@@ -64,7 +64,23 @@ namespace IMCAPI.Infrastructure.Persistence.Repositories
 
         public async Task AddActividadAsync(Actividad actividad)
         {
-            _context.AttachRange(actividad.beneficiarios);
+            foreach (var beneficiario in actividad.beneficiarios)
+            {
+                // Solo registrarlo como ya existente.
+                if (_context.Beneficiarios.Any(b => b.Id == beneficiario.Id))
+                {
+                    _context.Attach(beneficiario);
+                }
+
+                foreach(var organizacion in beneficiario.Organizaciones)
+                {
+                    // Solo registrarlo como ya existente.
+                    if (_context.Organizaciones.Any(o => o.Id == organizacion.Id))
+                    {
+                        _context.Attach(organizacion);
+                    }
+                }
+            }
             _context.Actividades.Add(actividad);
             await _context.SaveChangesAsync();
         }
