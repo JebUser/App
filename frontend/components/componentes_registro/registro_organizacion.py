@@ -166,18 +166,14 @@ def pantalla_registro_organizacion():
             nuevo_tipo_actividad_nombre = None
             if tipos_actividad_api:
                 # CORRECCIÓN: Agregar opción "Sin seleccionar" y manejar índice None
-                opciones_actividad = ["Sin seleccionar"] + [t["nombre"] for t in tipos_actividad_api]
-                seleccion_actividad_idx = st.selectbox(
+                seleccion_actividad = st.selectbox(
                     "Tipo de actividad (opcional)",
-                    options=range(len(opciones_actividad)),
-                    format_func=lambda x: opciones_actividad[x],
-                    help="Opcional: Seleccione un tipo de actividad"
+                    options=tipos_actividad_api,
+                    format_func=lambda x: x['nombre'],
+                    key = 'tipo_actividad_select',
+                    help="Seleccione un tipo de actividad"
                 )
-                
-                if seleccion_actividad_idx == 0:  # "Sin seleccionar"
-                    tipo_actividad_seleccionado = None
-                else:
-                    tipo_actividad_seleccionado = tipos_actividad_api[seleccion_actividad_idx - 1]
+                tipo_actividad_seleccionado = seleccion_actividad
             else:
                 tipo_actividad_seleccionado = None
                 st.info("No hay tipos de actividad disponibles. Puede crear uno nuevo si lo desea.")
