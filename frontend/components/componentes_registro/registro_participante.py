@@ -120,7 +120,7 @@ def agregar_participante(nombre_completo, rango_edad, genero, tipo_id, num_doc, 
         "apellido1": apellido1,
         "apellido2": apellido2,
         "celular": celular.strip() if celular else "",
-        "firma": "",  # Campo vacío por ahora
+        "firma": None,
         "tipoiden": {
             "id": tipo_id_id,
             "nombre": tipo_id

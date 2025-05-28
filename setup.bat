@@ -19,9 +19,12 @@ cd frontend
 
 :: Ejecutar la aplicacion en Streamlit
 echo Iniciando la aplicacion...
-streamlit run streamlit_app.py
+start "" "streamlit" "run" "streamlit_app.py"
 
-:: Mantener la ventana abierta si hay un error
-echo Si la aplicacion no se ejecuto, revisa los mensajes de error.
+:: Volver a la carpeta raíz (App)
+cd ..
+
+:: Mensaje final
+echo Aplicación iniciada. Puedes cerrar esta ventana.
 pause
 

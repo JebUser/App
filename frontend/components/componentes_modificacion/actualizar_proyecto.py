@@ -43,7 +43,7 @@ def pantalla_actualizar_proyecto(proyecto_data=None):
 
     # Botón para volver atrás
     if st.button("⬅️ Volver al listado"):
-        navigate_to('modificar', 'modificar_evento')
+        navigate_to('modificar', 'modificar_proyecto')
         st.rerun()
 
     # Si no se proporcionan datos, mostrar mensaje
@@ -125,8 +125,7 @@ def pantalla_actualizar_proyecto(proyecto_data=None):
             # Lógica para actualizar en BD iría aquí
             st.success("¡Proyecto actualizado correctamente!")
             st.balloons()
-            
-            # Opcional: Volver al listado después de guardar
+
             navigate_to('modificar', 'modificar_proyecto')
             st.rerun()
 
