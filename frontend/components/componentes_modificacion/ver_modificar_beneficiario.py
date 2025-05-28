@@ -3,6 +3,7 @@ import pandas as pd
 from streamlit_modal import Modal
 from utils.utils import navigate_to
 from api.gets import obtener_beneficiarios, obtener_generos, obtener_rango_edades
+from api.deletes import eliminar_beneficiario
 
 def pantalla_modificar_beneficiario():
     # Botón para volver atrás
@@ -65,6 +66,8 @@ def pantalla_modificar_beneficiario():
                 df['apellido1'].str.contains(patron, case=False, na=False) |
                 df['apellido2'].str.contains(patron, case=False, na=False)
             ]
+        if filtro_identificacion:
+            df = df[df['identificacion'] == filtro_identificacion]
         if filtro_genero:
             df = df[df['genero'] == filtro_genero]
         if filtro_rango_edad:
@@ -112,7 +115,7 @@ def pantalla_modificar_beneficiario():
                     navigate_to('modificar', 'actualizar_beneficiario')
                 
                 if st.button("🗑️", key=f"eliminar_{bene['id']}", help=f"Eliminar {bene['nombre1']} {bene['nombre2'] if bene['nombre2'] != None else ''} {bene['apellido1']} {bene['apellido2'] if bene['apellido2'] != None else ''}"):
-                    st.session_state.beneficiario_a_eliminar = f'{bene['nombre1']} {bene['nombre2'] if bene['nombre2'] != None else ''} {bene['apellido1']} {bene['apellido2'] if bene['apellido2'] != None else ''}'
+                    st.session_state.beneficiario_a_eliminar = (bene['id'], f'{bene['nombre1']} {bene['nombre2'] if bene['nombre2'] != None else ''} {bene['apellido1']} {bene['apellido2'] if bene['apellido2'] != None else ''}')
                     modal_eliminar.open()
             
             st.divider()
@@ -120,11 +123,11 @@ def pantalla_modificar_beneficiario():
     # Modal de confirmación de eliminación
     if modal_eliminar.is_open():
         with modal_eliminar.container():
-            bene_name = st.session_state.get('beneficiario_a_eliminar', '')
+            bene_id, bene_name = st.session_state.get('beneficiario_a_eliminar', '')
             st.markdown(f"### ¿Confirmar eliminación?")
             st.markdown(f"**Beneficiario:** {bene_name}")
             st.markdown("**Consecuencias:**")
-            st.markdown("- Se marcará como eliminada en el sistema")
+            st.markdown("- Se marcará como eliminado en el sistema")
             st.markdown("- Las referencias se cambiarán por 'borrado'")
             st.warning("Esta acción no puede deshacerse")
             
@@ -132,7 +135,8 @@ def pantalla_modificar_beneficiario():
             with col1:
                 if st.button("✅ Confirmar", type="primary", use_container_width=True):
                     # Lógica para eliminar (aquí iría tu conexión a BD)
-                    st.success(f"Beneficiario '{bene_name}' marcada para eliminación")
+                    eliminar_beneficiario(bene_id)
+                    st.success(f"Beneficiario '{bene_name}' marcado para eliminación")
                     modal_eliminar.close()
                     st.rerun()
             with col2:

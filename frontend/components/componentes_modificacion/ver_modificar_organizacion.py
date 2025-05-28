@@ -3,6 +3,7 @@ import pandas as pd
 from streamlit_modal import Modal
 from utils.utils import navigate_to
 from api.gets import obtener_organizaciones
+from api.deletes import eliminar_organizacion
 
 def pantalla_modificar_organizacion():
     # Botón para volver atrás
@@ -56,7 +57,7 @@ def pantalla_modificar_organizacion():
                     navigate_to('modificar', 'actualizar_organizacion')
                 
                 if st.button("🗑️", key=f"eliminar_{org['id']}", help=f"Eliminar {org['nombre']}"):
-                    st.session_state.organizacion_a_eliminar = org['nombre']
+                    st.session_state.organizacion_a_eliminar = (org['id'], org['nombre'])
                     modal_eliminar.open()
             
             st.divider()
@@ -64,7 +65,7 @@ def pantalla_modificar_organizacion():
     # Modal de confirmación de eliminación
     if modal_eliminar.is_open():
         with modal_eliminar.container():
-            org_name = st.session_state.get('organizacion_a_eliminar', '')
+            org_id, org_name = st.session_state.get('organizacion_a_eliminar', '')
             st.markdown(f"### ¿Confirmar eliminación?")
             st.markdown(f"**Organización:** {org_name}")
             st.markdown("**Consecuencias:**")
@@ -75,6 +76,7 @@ def pantalla_modificar_organizacion():
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("✅ Confirmar", type="primary", use_container_width=True):
+                    eliminar_organizacion(org_id)
                     st.success(f"Organización '{org_name}' marcada para eliminación")
                     modal_eliminar.close()
                     st.rerun()

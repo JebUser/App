@@ -3,6 +3,7 @@ import pandas as pd
 from streamlit_modal import Modal
 from utils.utils import navigate_to
 from api.gets import obtener_actividades
+from api.deletes import eliminar_actividad
 
 def pantalla_modificar_actividad():
      # Botón para volver atrás
@@ -80,7 +81,7 @@ def pantalla_modificar_actividad():
                     navigate_to('modificar', 'actualizar_actividad')
                 
                 if st.button("🗑️", key=f"eliminar_{act['id']}", help=f"Eliminar {act['nombre']}"):
-                    st.session_state.organizacion_a_eliminar = act['nombre']
+                    st.session_state.actividad_a_eliminar = (act['id'], act['nombre'])
                     modal_eliminar.open()
             
             st.divider()
@@ -88,9 +89,9 @@ def pantalla_modificar_actividad():
     # Modal de confirmación de eliminación
     if modal_eliminar.is_open():
         with modal_eliminar.container():
-            org_name = st.session_state.get('organizacion_a_eliminar', '')
+            act_id, act_name = st.session_state.get('actividad_a_eliminar', '')
             st.markdown(f"### ¿Confirmar eliminación?")
-            st.markdown(f"**Proyecto:** {org_name}")
+            st.markdown(f"**Actividad:** {act_id}")
             st.markdown("**Consecuencias:**")
             st.markdown("- Se marcará como eliminada en el sistema")
             st.markdown("- Las referencias se cambiarán por 'borrado'")
@@ -100,7 +101,8 @@ def pantalla_modificar_actividad():
             with col1:
                 if st.button("✅ Confirmar", type="primary", use_container_width=True):
                     # Lógica para eliminar (aquí iría tu conexión a BD)
-                    st.success(f"Organización '{org_name}' marcada para eliminación")
+                    eliminar_actividad(act_id)
+                    st.success(f"Actividad '{act_name}' marcada para eliminación")
                     modal_eliminar.close()
                     st.rerun()
             with col2:

@@ -4,6 +4,7 @@ from streamlit_modal import Modal
 from assets.data.organizaciones import organizaciones_ejemplo
 from utils.utils import navigate_to
 from api.gets import obtener_proyectos
+from api.deletes import eliminar_proyecto
 
 def pantalla_modificar_proyecto():
     # Botón para volver atrás
@@ -82,7 +83,7 @@ def pantalla_modificar_proyecto():
                     navigate_to('modificar', 'actualizar_proyecto')
                 
                 if st.button("🗑️", key=f"eliminar_{proy['id']}", help=f"Eliminar {proy['nombre']}"):
-                    st.session_state.organizacion_a_eliminar = proy['nombre']
+                    st.session_state.proyecto_a_eliminar = (proy['id'], proy['nombre'])
                     modal_eliminar.open()
             
             st.divider()
@@ -90,11 +91,11 @@ def pantalla_modificar_proyecto():
     # Modal de confirmación de eliminación
     if modal_eliminar.is_open():
         with modal_eliminar.container():
-            org_name = st.session_state.get('organizacion_a_eliminar', '')
+            proy_id, proy_name = st.session_state.get('proyecto_a_eliminar', '')
             st.markdown(f"### ¿Confirmar eliminación?")
-            st.markdown(f"**Proyecto:** {org_name}")
+            st.markdown(f"**Proyecto:** {proy_name}")
             st.markdown("**Consecuencias:**")
-            st.markdown("- Se marcará como eliminada en el sistema")
+            st.markdown("- Se marcará como eliminado en el sistema")
             st.markdown("- Las referencias se cambiarán por 'borrado'")
             st.warning("Esta acción no puede deshacerse")
             
@@ -102,7 +103,8 @@ def pantalla_modificar_proyecto():
             with col1:
                 if st.button("✅ Confirmar", type="primary", use_container_width=True):
                     # Lógica para eliminar (aquí iría tu conexión a BD)
-                    st.success(f"Organización '{org_name}' marcada para eliminación")
+                    eliminar_proyecto(proy_id)
+                    st.success(f"Proyecto '{proy_name}' marcado para eliminación")
                     modal_eliminar.close()
                     st.rerun()
             with col2:
