@@ -182,11 +182,16 @@ def pantalla_actualizar_actividad(actividad_data=None):
         )
 
     with col2:
+        default_index = None
+        for i in range(len(Lugares)):
+            if Lugares[i]["id"] == actividad_data["lugar"]["id"]:
+                default_index = i
+        
         lugar = st.selectbox(
             "Lugar*",
             options=Lugares,
             format_func=lambda x: x['nombre'],
-            index=actividad_data.get('lugar').get('id')-1,
+            index=default_index,
             key="lugar_select",
             help="Selecciona el lugar en el que se realizó la actividad"
         )

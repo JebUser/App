@@ -70,11 +70,17 @@ def pantalla_actualizar_proyecto(proyecto_data=None):
             value=proyecto_data.get('fechafinal')
         )
     with col2:
+        default_index = None
+        if proyecto_data["tipoproyecto"] != None:
+            for i in range(len(Tipoproyectos)):
+                if Tipoproyectos[i]["id"] == proyecto_data["tipoproyecto"]["id"]:
+                    default_index = i
+        
         tipo_proyecto = st.selectbox(
             "Tipo de proyecto",
             options=Tipoproyectos,
             format_func=lambda x: x['nombre'],
-            index=proyecto_data.get('tipoproyecto').get('id')-1 if proyecto_data["tipoproyecto"] != None else 0,
+            index=default_index,
             key = "tipoproyecto_select",
             help = "Selecciona el tipo de proyecto de la lista"
         )

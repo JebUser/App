@@ -3,6 +3,13 @@ from utils.utils import navigate_to
 from api.gets import obtener_municipios, obtener_tipos_organizacion, obtener_tipos_apoyo, obtener_lineas_produccion, obtener_tipos_actividad
 from api.puts import modificar_organizacion
 
+def encontrar_elemento(id:int, data:list):
+    default_index = None
+    for i in range(len(data)):
+        if data[i]["id"] == id:
+            default_index = i
+    return default_index
+
 def pantalla_actualizar_organizacion(organizacion_data=None):
     """
     Muestra el formulario para actualizar una organización
@@ -64,21 +71,29 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
             value=organizacion_data.get('nit', ''),
             help="Número de Identificación Tributaria"
         )
+
+        default_index = None
+        if organizacion_data["tipoorg"] != None:
+            default_index = encontrar_elemento(organizacion_data["tipoorg"]["id"], Tipoorgs)
         
         tipo = st.selectbox(
             "Tipo de organización", 
             options=Tipoorgs,
             format_func=lambda x: x['nombre'],
-            index=organizacion_data.get('tipoorg').get('id')-1 if organizacion_data["tipoorg"] != None else 0,
+            index=default_index,
             key="tipoorg_select",
             help="Selecciona el tipo de organización de la lista"
         )
+
+        default_index = None
+        if organizacion_data["lineaprod"] != None:
+            default_index = encontrar_elemento(organizacion_data["lineaprod"]["id"], Lineaprods)
         
         linea_productiva = st.selectbox(
             "Línea productiva",
             options = Lineaprods,
             format_func=lambda x: x['nombre'],
-            index=organizacion_data.get('lineaprod').get('id')-1 if organizacion_data["lineaprod"] != None else 0,
+            index=default_index,
             key="lineaprod_select",
             help="Selecciona la línea de producción de la lista"
         )
@@ -107,20 +122,29 @@ def pantalla_actualizar_organizacion(organizacion_data=None):
             value=organizacion_data.get('num_mujeres', -1),
             help=f"Máximo {num_integrantes} (total de integrantes). Escribir valor de -1 para indicar que no se tiene información de este campo"
         )
+
+        default_index = None
+        if organizacion_data["tipoapoyo"] != None:
+            default_index = encontrar_elemento(organizacion_data["tipoapoyo"]["id"], Tipoapoyos)
         
         tipo_apoyo = st.selectbox(
             "Tipo de apoyo brindado",
             options=Tipoapoyos,
             format_func=lambda x: x['nombre'],
-            index=organizacion_data.get('tipoapoyo').get('id')-1 if organizacion_data["tipoapoyo"] != None else 0,
+            index=default_index,
             key="tipoapoyo_select",
             help="Selecciona el tipo de apoyo de la lista"
         )
+
+        default_index = None
+        if organizacion_data["tipoactividad"] != None:
+            default_index = encontrar_elemento(organizacion_data["tipoactividad"]["id"], Tipoactividades)
+
         tipo_actividad = st.selectbox(
             "Tipo de actividad",
             options=Tipoactividades,
             format_func=lambda x: x['nombre'],
-            index=organizacion_data.get('tipoactividad').get('id')-1 if organizacion_data["tipoactividad"] != None else 0,
+            index=default_index,
             key="tipoactividad_select",
             help="Selecciona el tipo de actividad de la lista"
         )

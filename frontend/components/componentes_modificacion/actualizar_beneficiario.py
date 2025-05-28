@@ -3,6 +3,13 @@ from utils.utils import navigate_to
 from api.gets import obtener_tipos_identificacion, obtener_generos, obtener_rango_edades, obtener_grupos_etnicos, obtener_tipos_beneficiario, obtener_municipios, obtener_sectores, obtener_organizaciones
 from api.puts import modificar_beneficiario
 
+def encontrar_elemento(id:int, data:list):
+    default_index = None
+    for i in range(len(data)):
+        if data[i]["id"] == id:
+            default_index = i
+    return default_index
+
 def pantalla_actualizar_beneficiario(beneficiario_data=None):
     """
     Muestra el formulario para actualizar un beneficiario.
@@ -97,11 +104,15 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
     col1, col2 = st.columns(2)
 
     with col1:
+        default_index = None
+        if beneficiario_data["tipoiden"] != None:
+            default_index = encontrar_elemento(beneficiario_data["tipoiden"]["id"], Tiposiden)
+
         tipo_identificacion = st.selectbox(
             "Tipo de Identificación",
             options=Tiposiden,
             format_func=lambda x: x['nombre'],
-            index=beneficiario_data.get('tipoiden').get('id')-1 if beneficiario_data["tipoiden"] != None else None,
+            index=default_index,
             key='tipo_identificacion_select',
             help="Seleccione el tipo de identificación al que se encuentra asociado el número de identificación"
         )
@@ -130,51 +141,80 @@ def pantalla_actualizar_beneficiario(beneficiario_data=None):
             value=beneficiario_data.get('celular','')
         )
     with col2:
+        default_index = None
+        if beneficiario_data["genero"] != None:
+            default_index = encontrar_elemento(beneficiario_data["genero"]["id"], Generos)
+
         genero = st.selectbox(
             "Género*",
             options=Generos,
             format_func=lambda x: x['nombre'],
-            index=beneficiario_data.get('genero').get('id')-1 if beneficiario_data["genero"] != None else None,
+            index=default_index,
             key='genero_select',
             help="Seleccione el género del beneficiario"
         )
+
+        default_index = None
+        if beneficiario_data["rangoedad"] != None:
+            default_index = encontrar_elemento(beneficiario_data["rangoedad"]["id"], Rangoedades)
+
         rango_edad = st.selectbox(
             "Rango de Edad",
             options=Rangoedades,
             format_func=lambda x: x['rango'],
-            index=beneficiario_data.get('rangoedad').get('id')-1 if beneficiario_data["rangoedad"] != None else None,
+            index=default_index,
             key='rango_edad_select',
             help="Seleccione el rango de edad del beneficiario"
         )
+
+        default_index = None
+        if beneficiario_data["grupoetnico"] != None:
+            default_index = encontrar_elemento(beneficiario_data["grupoetnico"]["id"], Gruposetnicos)
+
         grupo_etnico = st.selectbox(
             "Grupo étnico al que pertenece (si aplica)",
             options=Gruposetnicos,
             format_func=lambda x: x['nombre'],
-            index=beneficiario_data.get('grupoetnico').get('id')-1 if beneficiario_data["grupoetnico"] != None else None,
+            index=default_index,
             key='grupo_etnico_select',
             help="Seleccione el grupo étnico al que pertenece el beneficiario"
         )
+
+        default_index = None
+        if beneficiario_data["tipobene"] != None:
+            default_index = encontrar_elemento(beneficiario_data["tipobene"]["id"], Tiposbene)
+
         tipo_beneficiario = st.selectbox(
             "El beneficiario es",
             options=Tiposbene,
             format_func=lambda x: x['nombre'],
-            index=beneficiario_data.get('tipobene').get('id')-1 if beneficiario_data["tipobene"] != None else None,
+            index=default_index,
             key='tipo_beneficiario_select',
             help="Seleccione el tipo de beneficiario"
         )
+
+        default_index = None
+        if beneficiario_data["municipio"] != None:
+            default_index = encontrar_elemento(beneficiario_data["municipio"]["id"], Municipios)
+
         municipio = st.selectbox(
             "Municipio",
             options=Municipios,
             format_func=lambda x: f"{x['nombre']}-{x['departamento']['nombre']}",
-            index=beneficiario_data.get('municipio').get('id')-1 if beneficiario_data["municipio"] != None else None,  # Selecciona el municipio de la organización por defecto. Se resta uno por cómo funcionan las listas en Python.
+            index=default_index,  # Selecciona el municipio de la organización por defecto. Se resta uno por cómo funcionan las listas en Python.
             key="municipio_select",
             help="Seleccione el municipio de la lista"
         )
+
+        default_index = None
+        if beneficiario_data["sector"] != None:
+            default_index = encontrar_elemento(beneficiario_data["sector"]["id"], Sectores)
+
         sector = st.selectbox(
             "Sector al que pertenece",
             options=Sectores,
             format_func=lambda x: x['nombre'],
-            index=beneficiario_data.get('sector').get('id')-1 if beneficiario_data["sector"] != None else None,
+            index=default_index,
             key='sector_select',
             help="Seleccione el sector al que pertenece el beneficiario"
         )
